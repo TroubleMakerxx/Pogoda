@@ -13,6 +13,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
+using System.Net;
+using Windows.UI.Popups;
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x415
 
@@ -30,25 +33,62 @@ namespace Pogoda
             this.InitializeComponent();
             LoadData();
         }
-
+        string APIKey = "eca043052aa31fb6a7c12c7fc52357a6";
+        
         private void LoadData()
         {
-            WeeklyWeatherData = new List<WeatherData>()
+            using (WebClient webClient = new WebClient())
             {
-                new WeatherData { Date = "Monday", Temperature = "25°C", WeatherDescription = "Sunny" },
-                new WeatherData { Date = "Tuesday", Temperature = "22°C", WeatherDescription = "Cloudy" },
-                new WeatherData { Date = "Wednesday", Temperature = "20°C", WeatherDescription = "Rainy" },
-                new WeatherData { Date = "Thursday", Temperature = "24°C", WeatherDescription = "Partly Cloudy" },
-                new WeatherData { Date = "Friday", Temperature = "27°C", WeatherDescription = "Sunny" },
-                new WeatherData { Date = "Saturday", Temperature = "23°C", WeatherDescription = "Cloudy" },
-                new WeatherData { Date = "Sunday", Temperature = "26°C", WeatherDescription = "Sunny" }
-            };
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?q=Krakow&units=metric&appid=" + APIKey);
+                WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
+                WeeklyWeatherData = new List<WeatherData>();
+                Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
+                
+                for (int i = 0; i < weatherData.list.Count; i++)
+                {
+                    string date = weatherData.list[i].dt_txt;
+                    DateTime dateTime = DateTime.Parse(date);
+                    string day = dateTime.DayOfWeek.ToString();
+                    
+                    string temp = String.Format("{0} \u00B0C", weatherData.list[i].main.temp);
+                    string description = weatherData.list[i].weather[0].description;
+
+                    if (temperatureDataByDay.ContainsKey(day))
+                    {
+                        temperatureDataByDay[day].Add(weatherData.list[i].main.temp);
+                    }
+                    else
+                    {
+                        temperatureDataByDay.Add(day, new List<double> { weatherData.list[i].main.temp });
+                    }
+
+                    bool dayExists = WeeklyWeatherData.Any(w => w.Date == day);
+
+                    if (!dayExists)
+                    {
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description });
+                    }
+                }
+
+                foreach (var kvp in temperatureDataByDay)
+                {
+                    double averageTemperature = kvp.Value.Average();
+                    double roundedTemperature = Math.Round(averageTemperature, 2);
+
+                    var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == kvp.Key);
+                    if (weatherDay != null)
+                    {
+                        weatherDay.Temperature = String.Format("{0} \u00B0C", roundedTemperature);
+                    }
+                }
+
+            }
         }
+
 
 
         private void expandButton_Click(object sender, RoutedEventArgs e)
         {
-            //pokazanie Grida o nazwie sidepanel
             if (sidepanel.Visibility == Visibility.Collapsed)
             {
                 sidepanel.Visibility = Visibility.Visible;
