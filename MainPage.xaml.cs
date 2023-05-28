@@ -39,7 +39,7 @@ namespace Pogoda
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?q=Krakow&units=metric&appid=" + APIKey);
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?q=Krakow&units=metric&appid=" + API_KEY);
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
