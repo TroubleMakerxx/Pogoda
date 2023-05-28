@@ -33,7 +33,7 @@ namespace Pogoda
             this.InitializeComponent();
             LoadData();
         }
-        string API_KEY = "eca043052aa31fb6a7c12c7fc52357a6";
+        string API_KEY = "";
         
         private void LoadData()
         {
