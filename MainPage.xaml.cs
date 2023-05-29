@@ -18,6 +18,7 @@ using System.Net;
 using Windows.UI.Popups;
 using Windows.Devices.Geolocation;
 using System.Threading.Tasks;
+using System.Data;
 
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x415
@@ -36,41 +37,38 @@ namespace Pogoda
         {
             this.InitializeComponent();
             geolocator = new Geolocator();
-            LoadData();
-        }
-
-        private async void Initialize()
-        {
-            await LoadLocalization();
+            LoadLokalizacja();
             LoadData();
         }
 
         string API_KEY = ApiKey.Value;
+
         double latitude;
         double longitude;
 
-        public async Task LoadLocalization()
+        public void LoadLokalizacja()
         {
-            Geoposition currentPosition = await geolocator.GetGeopositionAsync();
+            Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
             latitude = currentPosition.Coordinate.Point.Position.Latitude;
             longitude = currentPosition.Coordinate.Point.Position.Longitude;
         }
 
-
         public async void wyswietl()
         {
-
-            MessageDialog messageDialog = new MessageDialog("http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=metric&appid=" + API_KEY);
+            MessageDialog messageDialog = new MessageDialog($"http://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
             await messageDialog.ShowAsync();
         }
+
+
         private void LoadData()
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?q=Krakow&units=metric&appid=" + API_KEY);
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=metric&appid=" + API_KEY);
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
+                wyswietl();
 
                 for (int i = 0; i < weatherData.list.Count; i++)
                 {
