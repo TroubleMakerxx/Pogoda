@@ -97,7 +97,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-
+ApiSecret.cs
 # Chutzpah Test files
 _Chutzpah*
 

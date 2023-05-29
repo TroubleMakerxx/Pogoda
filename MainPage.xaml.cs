@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using System.Net;
 using Windows.UI.Popups;
+using Windows.Devices.Geolocation;
+using System.Threading.Tasks;
+
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x415
 
@@ -27,14 +30,39 @@ namespace Pogoda
     public sealed partial class MainPage : Page
     {
         public List<WeatherData> WeeklyWeatherData { get; set; }
-        
+        private Geolocator geolocator;
+
         public MainPage()
         {
             this.InitializeComponent();
+            geolocator = new Geolocator();
             LoadData();
         }
-        string API_KEY = "";
-        
+
+        private async void Initialize()
+        {
+            await LoadLocalization();
+            LoadData();
+        }
+
+        string API_KEY = ApiKey.Value;
+        double latitude;
+        double longitude;
+
+        public async Task LoadLocalization()
+        {
+            Geoposition currentPosition = await geolocator.GetGeopositionAsync();
+            latitude = currentPosition.Coordinate.Point.Position.Latitude;
+            longitude = currentPosition.Coordinate.Point.Position.Longitude;
+        }
+
+
+        public async void wyswietl()
+        {
+
+            MessageDialog messageDialog = new MessageDialog("http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=metric&appid=" + API_KEY);
+            await messageDialog.ShowAsync();
+        }
         private void LoadData()
         {
             using (WebClient webClient = new WebClient())
@@ -43,13 +71,13 @@ namespace Pogoda
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
-                
+
                 for (int i = 0; i < weatherData.list.Count; i++)
                 {
                     string date = weatherData.list[i].dt_txt;
                     DateTime dateTime = DateTime.Parse(date);
                     string day = dateTime.DayOfWeek.ToString();
-                    
+
                     string temp = String.Format("{0} \u00B0C", weatherData.list[i].main.temp);
                     string description = weatherData.list[i].weather[0].description;
 
