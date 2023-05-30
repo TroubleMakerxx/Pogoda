@@ -39,14 +39,20 @@ namespace Pogoda
             geolocator = new Geolocator();
             LoadLokalizacja();
             LoadData();
+            Window.Current.SizeChanged += Current_SizeChanged;
         }
 
         string API_KEY = ApiKey.Value;
 
         double latitude;
         double longitude;
+        private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        {
+            double width = e.Size.Width;
+            double height = e.Size.Height;
 
-        public void LoadLokalizacja()
+        }
+            public void LoadLokalizacja()
         {
             Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
             latitude = currentPosition.Coordinate.Point.Position.Latitude;
@@ -110,21 +116,6 @@ namespace Pogoda
 
             }
         }
-
-
-
-        private void expandButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sidepanel.Visibility == Visibility.Collapsed)
-            {
-                sidepanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                sidepanel.Visibility = Visibility.Collapsed;
-            }
-        }
-
 
     }
     public class WeatherData
