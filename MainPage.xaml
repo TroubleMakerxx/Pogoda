@@ -10,7 +10,15 @@
     <Grid Background="White">
         <Image Grid.RowSpan="2" Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Grid x:Name="todayGrid" Margin="10,10,10,10">
+
+            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
+                <Grid.Background>
+                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                </Grid.Background>
+                <TextBlock Text="Bydgoszcz" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Grid>
+
+            <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
                 <Grid.Background>
                     <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
                 </Grid.Background>
