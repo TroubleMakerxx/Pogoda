@@ -7,23 +7,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     >
-    <Grid Background="LightBlue">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-                <TextBlock Text="Weekly Weather" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+    <Grid Background="White">
+                <Image Grid.RowSpan="2" Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Grid x:Name="gridmian2"  Padding="10" MaxWidth="300" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
+                    <Grid.Background>
+                        <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                    </Grid.Background>
+                    <TextBlock Text="Pogoda na dziś" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+                 </StackPanel>
+
+            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
+                <Grid.Background>
+                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                </Grid.Background>
+                <TextBlock Text="Pogoda na nastepne 5 dni" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible">
             <GridView ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" />
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                    <GridView.ItemContainerStyle>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="Padding" Value="16"/>
                         <Setter Property="Margin" Value="4,0"/>
@@ -38,15 +46,20 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <Border Background="Transparent">
-                                                    <Grid x:Name="grid" Background="#F2F2F2" Padding="32" MinHeight="200" MinWidth="200" CornerRadius="16">
+                                                    <Grid x:Name="grid"  Padding="32" MinHeight="200" MinWidth="200" CornerRadius="16">
+                                                        <Grid.Background>
+                                                            <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                                                        </Grid.Background>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="*"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
                                                             <RowDefinition Height="Auto"/>
                                                         </Grid.RowDefinitions>
+
                                                         <TextBlock Text="{Binding Date}" FontSize="24" Foreground="#333333" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                         <TextBlock Text="{Binding Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                                                        <TextBlock Text="{Binding WeatherDescription}" FontSize="24" Foreground="#666666" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" TextWrapping="Wrap"/>
+                                                        <Image Source="{Binding WeatherIcon}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"/>
                                                     </Grid>
                                                 </Border>
                                             </ControlTemplate>
@@ -59,8 +72,9 @@
                         </Button>
                     </DataTemplate>
                 </GridView.ItemTemplate>
+
+
             </GridView>
-        </ScrollViewer>
-    </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

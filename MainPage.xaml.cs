@@ -22,13 +22,8 @@ using System.Data;
 using System.Globalization;
 
 
-//Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x415
-
 namespace Pogoda
 {
-    /// <summary>
-    /// Pusta strona, która może być używana samodzielnie lub do której można nawigować wewnątrz ramki.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public List<WeatherData> WeeklyWeatherData { get; set; }
@@ -53,7 +48,8 @@ namespace Pogoda
             double height = e.Size.Height;
 
         }
-            public void LoadLokalizacja()
+
+        public void LoadLokalizacja()
         {
             Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
             latitude = currentPosition.Coordinate.Point.Position.Latitude;
@@ -66,7 +62,6 @@ namespace Pogoda
             await messageDialog.ShowAsync();
         }
 
-
         private void LoadData()
         {
             using (WebClient webClient = new WebClient())
@@ -75,14 +70,19 @@ namespace Pogoda
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
-                wyswietl();
 
                 CultureInfo polishCulture = new CultureInfo("pl-PL");
+                DateTime currentDate = DateTime.Now.Date;
 
                 for (int i = 0; i < weatherData.list.Count; i++)
                 {
                     string date = weatherData.list[i].dt_txt;
                     DateTime dateTime = DateTime.Parse(date);
+
+                    // Skip the current day's weather forecast
+                    if (dateTime.Date == currentDate)
+                        continue;
+
                     string day = polishCulture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
 
                     // Capitalize the first letter
@@ -92,6 +92,9 @@ namespace Pogoda
                     string temp = Math.Round(temperature).ToString() + "°";
 
                     string description = weatherData.list[i].weather[0].description;
+                    string iconCode = weatherData.list[i].weather[0].icon;
+                    string dayIconCode = iconCode.Replace("n", "d");
+                    string iconUrl = $"https://openweathermap.org/img/wn/{dayIconCode}@2x.png";
 
                     if (temperatureDataByDay.ContainsKey(day))
                     {
@@ -106,7 +109,7 @@ namespace Pogoda
 
                     if (!dayExists)
                     {
-                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description });
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description, WeatherIcon = iconUrl });
                     }
                 }
 
@@ -125,12 +128,12 @@ namespace Pogoda
         }
 
 
-
-
-
     }
+
     public class WeatherData
     {
+        public string WeatherIcon { get; set; }
+
         public string Date { get; set; }
         public string Temperature { get; set; }
         public string WeatherDescription { get; set; }
