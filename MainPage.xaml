@@ -18,7 +18,12 @@
             </Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Visible">
             <GridView ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
-                <GridView.ItemContainerStyle>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="Padding" Value="16"/>
                         <Setter Property="Margin" Value="4,0"/>

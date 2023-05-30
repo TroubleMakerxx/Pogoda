@@ -82,16 +82,18 @@ namespace Pogoda
                     DateTime dateTime = DateTime.Parse(date);
                     string day = dateTime.DayOfWeek.ToString();
 
-                    string temp = String.Format("{0} \u00B0C", weatherData.list[i].main.temp);
+                    double temperature = weatherData.list[i].main.temp;
+                    string temp = Math.Round(temperature).ToString() + "°C";
+
                     string description = weatherData.list[i].weather[0].description;
 
                     if (temperatureDataByDay.ContainsKey(day))
                     {
-                        temperatureDataByDay[day].Add(weatherData.list[i].main.temp);
+                        temperatureDataByDay[day].Add(temperature);
                     }
                     else
                     {
-                        temperatureDataByDay.Add(day, new List<double> { weatherData.list[i].main.temp });
+                        temperatureDataByDay.Add(day, new List<double> { temperature });
                     }
 
                     bool dayExists = WeeklyWeatherData.Any(w => w.Date == day);
@@ -105,17 +107,18 @@ namespace Pogoda
                 foreach (var kvp in temperatureDataByDay)
                 {
                     double averageTemperature = kvp.Value.Average();
-                    double roundedTemperature = Math.Round(averageTemperature, 2);
+                    double roundedTemperature = Math.Round(averageTemperature);
 
                     var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == kvp.Key);
                     if (weatherDay != null)
                     {
-                        weatherDay.Temperature = String.Format("{0} \u00B0C", roundedTemperature);
+                        weatherDay.Temperature = roundedTemperature.ToString() + "°C";
                     }
                 }
-
             }
         }
+
+
 
     }
     public class WeatherData
