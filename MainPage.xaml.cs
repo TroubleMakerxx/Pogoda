@@ -19,6 +19,7 @@ using Windows.UI.Popups;
 using Windows.Devices.Geolocation;
 using System.Threading.Tasks;
 using System.Data;
+using System.Globalization;
 
 
 //Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x415
@@ -76,14 +77,19 @@ namespace Pogoda
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
                 wyswietl();
 
+                CultureInfo polishCulture = new CultureInfo("pl-PL");
+
                 for (int i = 0; i < weatherData.list.Count; i++)
                 {
                     string date = weatherData.list[i].dt_txt;
                     DateTime dateTime = DateTime.Parse(date);
-                    string day = dateTime.DayOfWeek.ToString();
+                    string day = polishCulture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
+
+                    // Capitalize the first letter
+                    day = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(day);
 
                     double temperature = weatherData.list[i].main.temp;
-                    string temp = Math.Round(temperature).ToString() + "°C";
+                    string temp = Math.Round(temperature).ToString() + "°";
 
                     string description = weatherData.list[i].weather[0].description;
 
@@ -112,11 +118,13 @@ namespace Pogoda
                     var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == kvp.Key);
                     if (weatherDay != null)
                     {
-                        weatherDay.Temperature = roundedTemperature.ToString() + "°C";
+                        weatherDay.Temperature = roundedTemperature.ToString() + "°";
                     }
                 }
             }
         }
+
+
 
 
 
