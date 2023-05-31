@@ -20,7 +20,7 @@ using Windows.Devices.Geolocation;
 using System.Threading.Tasks;
 using System.Data;
 using System.Globalization;
-
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Pogoda
 {
@@ -35,6 +35,7 @@ namespace Pogoda
             geolocator = new Geolocator();
             LoadLokalizacja();
             LoadData();
+            LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
         }
 
@@ -60,6 +61,33 @@ namespace Pogoda
         {
             MessageDialog messageDialog = new MessageDialog($"http://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
             await messageDialog.ShowAsync();
+        }
+        
+        public void LoadDayData()
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?lat=53,1281262873261&lon=18,0118665168758&units=metric&appid=eca043052aa31fb6a7c12c7fc52357a6");
+                WeatherTodayDate weatherTodayDate= JsonConvert.DeserializeObject<WeatherTodayDate>(json);
+
+                double temperature = Math.Round(weatherTodayDate.Main.Temp);
+                string icon = "";
+                if (weatherTodayDate.Weather.Length > 0)
+                {
+                    icon = weatherTodayDate.Weather[0].Icon;
+                }
+                TemperaturaDnia.Text = temperature.ToString()+ "°C";
+                if (icon.Contains("n"))
+                {
+                    icon = icon.Replace("n", "d");
+                }
+                string imagePath = "ms-appx:///Assets/WeatherIcons/"+icon+".png";
+                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                IkonkaDnia.Source = bitmapImage;
+
+
+
+            }
         }
 
         private void LoadData()
@@ -89,12 +117,17 @@ namespace Pogoda
                     day = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(day);
 
                     double temperature = weatherData.list[i].main.temp;
-                    string temp = Math.Round(temperature).ToString() + "°";
+                    string temp = Math.Round(temperature).ToString() + "°C";
 
                     string description = weatherData.list[i].weather[0].description;
                     string iconCode = weatherData.list[i].weather[0].icon;
-                    string dayIconCode = iconCode.Replace("n", "d");
-                    string iconUrl = $"https://openweathermap.org/img/wn/{dayIconCode}@2x.png";
+                    if (iconCode.Contains("n"))
+                    {
+                        iconCode = iconCode.Replace("n", "d");
+                    }
+                    string imagePath = "ms-appx:///Assets/WeatherIcons/" + iconCode + ".png";
+                    TemperaturaDnia.Text = temperature.ToString() + "°C";
+                    BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
 
                     if (temperatureDataByDay.ContainsKey(day))
                     {
@@ -109,7 +142,7 @@ namespace Pogoda
 
                     if (!dayExists)
                     {
-                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description, WeatherIcon = iconUrl });
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description, WeatherIcon = bitmapImage });
                     }
                 }
 
@@ -121,7 +154,7 @@ namespace Pogoda
                     var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == kvp.Key);
                     if (weatherDay != null)
                     {
-                        weatherDay.Temperature = roundedTemperature.ToString() + "°";
+                        weatherDay.Temperature = roundedTemperature.ToString() + "°C";
                     }
                 }
             }
@@ -132,7 +165,7 @@ namespace Pogoda
 
     public class WeatherData
     {
-        public string WeatherIcon { get; set; }
+        public BitmapImage WeatherIcon { get; set; }
 
         public string Date { get; set; }
         public string Temperature { get; set; }

@@ -124,6 +124,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WeatherTodayDate.cs" />
     <Compile Include="WetherData.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +133,16 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="01d.png" />
+    <Content Include="Assets\WeatherIcons\01d.png" />
+    <Content Include="Assets\WeatherIcons\02d.png" />
+    <Content Include="Assets\WeatherIcons\03d.png" />
+    <Content Include="Assets\WeatherIcons\04d.png" />
+    <Content Include="Assets\WeatherIcons\09d.png" />
+    <Content Include="Assets\WeatherIcons\10d.png" />
+    <Content Include="Assets\WeatherIcons\11d.png" />
+    <Content Include="Assets\WeatherIcons\13d.png" />
+    <Content Include="Assets\WeatherIcons\50d.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -159,6 +170,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -8,7 +8,11 @@
     mc:Ignorable="d"
     >
     <Grid Background="White">
-        <Image Grid.RowSpan="2" Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+
+        <Button Content="Pogoda Dla Kraju" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16"/>
+        <Button Content="Szczegóły pogody" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
 
             <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
@@ -28,8 +32,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Pogoda na dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding TodayWeatherData.Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                <Image Source="{Binding TodayWeatherData.WeatherIcon}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
+                <TextBlock Name="TemperaturaDnia" Text="" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
+                <Image Name="IkonkaDnia" Width="100" Height="100"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
             </Grid>
 
             <GridView ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
