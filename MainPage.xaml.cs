@@ -67,7 +67,7 @@ namespace Pogoda
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?lat=53,1281262873261&lon=18,0118665168758&units=metric&appid=eca043052aa31fb6a7c12c7fc52357a6");
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?lat=53,1281262873261&lon=18,0118665168758&units=metric&appid="+ API_KEY);
                 WeatherTodayDate weatherTodayDate= JsonConvert.DeserializeObject<WeatherTodayDate>(json);
 
                 double temperature = Math.Round(weatherTodayDate.Main.Temp);
@@ -98,7 +98,8 @@ namespace Pogoda
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
-
+                Dictionary<string, Dictionary<string, int>> iconCountByDay = new Dictionary<string, Dictionary<string, int>>();
+                
                 CultureInfo polishCulture = new CultureInfo("pl-PL");
                 DateTime currentDate = DateTime.Now.Date;
 
@@ -125,9 +126,20 @@ namespace Pogoda
                     {
                         iconCode = iconCode.Replace("n", "d");
                     }
-                    string imagePath = "ms-appx:///Assets/WeatherIcons/" + iconCode + ".png";
-                    TemperaturaDnia.Text = temperature.ToString() + "°C";
-                    BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                    
+                    if (!iconCountByDay.ContainsKey(day))
+                    {
+                        iconCountByDay.Add(day, new Dictionary<string, int>());
+                    }
+
+                    if (iconCountByDay[day].ContainsKey(iconCode))
+                    {
+                        iconCountByDay[day][iconCode]++;
+                    }
+                    else
+                    {
+                        iconCountByDay[day].Add(iconCode, 1);
+                    }
 
                     if (temperatureDataByDay.ContainsKey(day))
                     {
@@ -142,7 +154,7 @@ namespace Pogoda
 
                     if (!dayExists)
                     {
-                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description, WeatherIcon = bitmapImage });
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description });
                     }
                 }
 
@@ -155,6 +167,19 @@ namespace Pogoda
                     if (weatherDay != null)
                     {
                         weatherDay.Temperature = roundedTemperature.ToString() + "°C";
+                    }
+                }
+
+                foreach (var kvp in iconCountByDay)
+                {
+                    string day = kvp.Key;
+                    string mostFrequentIcon = kvp.Value.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+
+                    // Update the icon for the corresponding day in the WeeklyWeatherData list
+                    var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == day);
+                    if (weatherDay != null)
+                    {
+                        weatherDay.WeatherIcon = new BitmapImage(new Uri("ms-appx:///Assets/WeatherIcons/" + mostFrequentIcon + ".png"));
                     }
                 }
             }
