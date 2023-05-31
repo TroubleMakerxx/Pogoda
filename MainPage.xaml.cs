@@ -185,7 +185,10 @@ namespace Pogoda
             }
         }
 
-
+        private void PogodaKrajprzycisk_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PogodaKraj));
+        }
     }
 
     public class WeatherData
