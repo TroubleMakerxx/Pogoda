@@ -46,8 +46,8 @@ namespace Pogoda
 
                 double temperature = Math.Round(weatherTodayDate.Main.Temp);
                 string description = weatherTodayDate.Weather[0].Description;
-                double minTemperature = weatherTodayDate.Main.TempMin;
-                double maxTemperature = weatherTodayDate.Main.TempMax;
+                double minTemperature = weatherTodayDate.Main.temp_min;
+                double maxTemperature = weatherTodayDate.Main.temp_max;
                 double pressure = weatherTodayDate.Main.Pressure;
                 int humidity = weatherTodayDate.Main.Humidity;
                 double windSpeed = weatherTodayDate.Wind.Speed;
