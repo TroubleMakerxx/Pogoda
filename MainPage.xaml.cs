@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Globalization;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI;
 
 namespace Pogoda
 {
@@ -154,7 +155,7 @@ namespace Pogoda
 
                     if (!dayExists)
                     {
-                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temp, WeatherDescription = description });
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, WeatherDescription = description });
                     }
                 }
 
@@ -188,6 +189,42 @@ namespace Pogoda
         private void PogodaKrajprzycisk_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(PogodaKraj));
+        }
+
+        private void UstawieniaLokalizacji_Click(object sender, RoutedEventArgs e)
+        {
+            StackPanel locationPanel = new StackPanel();
+            locationPanel.Background = new SolidColorBrush(Colors.White);
+            locationPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
+            locationPanel.BorderThickness = new Thickness(1);
+            locationPanel.CornerRadius = new CornerRadius(4);
+            locationPanel.Padding = new Thickness(8);
+
+            // Create a ListBox to display the location options
+            ListBox locationListBox = new ListBox();
+            locationListBox.FontSize = 18;
+            locationListBox.SelectionChanged += LocationListBox_SelectionChanged;
+
+            // Add some sample location options to the ListBox
+            locationListBox.Items.Add("Location 1");
+            locationListBox.Items.Add("Location 2");
+            locationListBox.Items.Add("Location 3");
+
+            // Add the ListBox to the panel
+            locationPanel.Children.Add(locationListBox);
+
+            // Create a Flyout to display the panel
+            Flyout flyout = new Flyout();
+            flyout.Content = locationPanel;
+
+            // Attach the Flyout to the button
+            flyout.ShowAt(UstawieniaLokalizacji);
+        }
+
+        private void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle the selection change event of the location ListBox
+            // You can write your logic here to handle the selected location
         }
     }
 

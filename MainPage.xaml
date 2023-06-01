@@ -10,16 +10,13 @@
     <Grid Background="White">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
 
-        <Button Name="PogodaKrajprzycisk" Content="Pogoda Dla Kraju" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click"/>
-        <Button Content="Szczegóły pogody" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16"/>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-
-            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
+            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="100"  CornerRadius="16" Margin="10,10,10,10">
                 <Grid.Background>
                     <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
                 </Grid.Background>
-                <TextBlock Text="Bydgoszcz" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Button Name="UstawieniaLokalizacji" Content="Bydgoszcz" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="16" Click="UstawieniaLokalizacji_Click"/>
             </Grid>
 
             <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
@@ -31,10 +28,16 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Pogoda na dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock Name="TemperaturaDnia" Text="" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                <Image Name="IkonkaDnia" Width="100" Height="100"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
+
+                <Button Name="PogodaKrajprzycisk" Content="Pogoda Dla Kraju" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click" Grid.Row="1"/>
+                <TextBlock Text="Pogoda na dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"/>
+                <Button Name="SzczegulyPogody" Content="Szczegóły pogody" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1"/>
+                <TextBlock Name="TemperaturaDnia" Text="" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
+                <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
             </Grid>
+
+
+
 
             <GridView ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
                 <GridView.ItemsPanel>
