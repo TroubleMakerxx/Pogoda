@@ -10,36 +10,51 @@
     <Grid Background="White">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-  <StackPanel HorizontalAlignment="Center" VerticalAlignment="center">
-
-            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="100"  CornerRadius="16" Margin="10,10,10,10">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="center">
+            
+                
+                <Button Name="UstawieniaLokalizacji" FontSize="55" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="16" Padding="5" Click="UstawieniaLokalizacji_Click">
+                    <Button.Background>
+                        <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30" />
+                    </Button.Background>
+                    <Button.Content>
+                        Bydgoszcz
+                    </Button.Content>
+                </Button>
+          
+            
+            <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16"   HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.Background>
-                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
-                </Grid.Background>
-                <Button Name="UstawieniaLokalizacji" Content="Bydgoszcz" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="16" Click="UstawieniaLokalizacji_Click"/>
-            </Grid>
-
-            <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
-                <Grid.Background>
-                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width ="Auto"/>
+                    <ColumnDefinition Width ="Auto"/>
+                    <ColumnDefinition Width ="Auto"/>
+                    <ColumnDefinition Width ="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <Button Name="PogodaKrajprzycisk" Content="Pogoda Dla Kraju" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click" Grid.Row="1"/>
-                <TextBlock Text="Pogoda na dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"/>
-                <Button Name="SzczegulyPogody" Content="Szczegóły pogody" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1"/>
-                <TextBlock Name="TemperaturaDnia" Text="" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
-                <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
+                <TextBlock Text="Dzisiaj" Padding="0,10,0,0" Margin="0,0,0,-20"  Grid.ColumnSpan="2" Grid.Column="1" FontSize="50" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
+
+                <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="right" Margin="5">
+                    <Button Name="SzczegulyPogody" Content="Szczegóły" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1"/>
+                    <Button Name="PogodaKrajprzycisk" Content="Mapa" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click" Grid.Row="1"/>
+                </StackPanel>
+
+                <TextBlock Text="55°C" Name="TemperaturaDnia" Grid.Column="1" FontSize="50" Margin="0,0,10,0" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
+
+                <Image Grid.Column="0" Margin="-30" Name="IkonkaDnia" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
+           
             </Grid>
 
 
 
 
-            <GridView Name="WeeklyData" ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
+            <GridView Name="WeeklyData" ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,0" >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
@@ -47,8 +62,8 @@
                 </GridView.ItemsPanel>
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
-                        <Setter Property="Padding" Value="16"/>
-                        <Setter Property="Margin" Value="4,0"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Margin" Value="0,0"/>
                     </Style>
                 </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
@@ -60,12 +75,11 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <Border Background="Transparent">
-                                                    <Grid x:Name="grid"  Padding="32" MinHeight="200" MinWidth="250" CornerRadius="16">
+                                                    <Grid x:Name="grid"  Padding="32" MinHeight="100" MinWidth="250" CornerRadius="16">
                                                         <Grid.Background>
-                                                            <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                                                            <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                                                         </Grid.Background>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
                                                             <RowDefinition Height="Auto"/>
                                                             <RowDefinition Height="Auto"/>
                                                             <RowDefinition Height="Auto"/>
@@ -73,7 +87,7 @@
 
                                                         <TextBlock Text="{Binding Date}" FontSize="25" Foreground="#333333" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                         <TextBlock Text="{Binding Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                                                        <Image Source="{Binding WeatherIcon}" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"/>
+                                                        <Image Source="{Binding WeatherIcon}" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-30" Grid.Row="3"/>
                                                     </Grid>
                                                 </Border>
                                             </ControlTemplate>
