@@ -25,6 +25,7 @@ using Windows.UI;
 using System.ServiceModel.Channels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.Storage;
 
 namespace Pogoda
 {
@@ -32,12 +33,15 @@ namespace Pogoda
     {
         public List<WeatherData> WeeklyWeatherData { get; set; }
         private Geolocator geolocator;
+        private ApplicationDataContainer localSettings;
 
         public MainPage()
         {
             this.InitializeComponent();
             geolocator = new Geolocator();
             WeeklyWeatherData = new List<WeatherData>();
+            localSettings = ApplicationData.Current.LocalSettings;
+            LoadSavedLocation();
             LoadData();
             LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
@@ -260,6 +264,40 @@ namespace Pogoda
             Frame.Navigate(typeof(PogodaKraj));
         }
 
+        private void LoadSavedLocation()
+        {
+            // Check if a saved location exists in application settings
+            if (localSettings.Values.ContainsKey("SelectedLocation"))
+            {
+                string savedLocation = localSettings.Values["SelectedLocation"].ToString();
+
+                // Update the location text
+                UstawieniaLokalizacji.Content = savedLocation;
+
+                if (savedLocation == "Location 3")
+                {
+                    city = "Nuuk";
+                    status = 2;
+                    LoadData();
+                    LoadDayData();
+                }
+                else if (savedLocation == "Lokalizacja")
+                {
+                    status = 1;
+                    LoadLokalizacja();
+                    LoadData();
+                    LoadDayData();
+                }
+                else if (savedLocation == "Bydgosz")
+                {
+                    city = "Bydgoszcz";
+                    status = 2;
+                    LoadData();
+                    LoadDayData();
+                }
+            }
+        }
+
         private void UstawieniaLokalizacji_Click(object sender, RoutedEventArgs e)
         {
             StackPanel locationPanel = new StackPanel();
@@ -302,6 +340,7 @@ namespace Pogoda
             {
                 city = "Nuuk";
                 status = 2;
+                SaveSelectedLocation(selectedLocation);
                 LoadData();
                 LoadDayData();
             }
@@ -320,7 +359,13 @@ namespace Pogoda
                 LoadDayData();
             }
         }
+        private void SaveSelectedLocation(string location)
+        {
+            localSettings.Values["SelectedLocation"] = location;
+        }
     }
+    
+    
 
     public class WeatherData
     {
