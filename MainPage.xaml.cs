@@ -22,6 +22,9 @@ using System.Data;
 using System.Globalization;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI;
+using System.ServiceModel.Channels;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Pogoda
 {
@@ -34,16 +37,22 @@ namespace Pogoda
         {
             this.InitializeComponent();
             geolocator = new Geolocator();
-            LoadLokalizacja();
+            WeeklyWeatherData = new List<WeatherData>();
             LoadData();
             LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
+
         }
+
+        
 
         string API_KEY = ApiKey.Value;
 
         double latitude;
         double longitude;
+        int status;
+        string city = "Bydgoszcz";
+
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
             double width = e.Size.Width;
@@ -58,19 +67,65 @@ namespace Pogoda
             longitude = currentPosition.Coordinate.Point.Position.Longitude;
         }
 
-        public async void wyswietl()
+        public async void wyswietl(string json)
         {
-            MessageDialog messageDialog = new MessageDialog($"http://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
-            await messageDialog.ShowAsync();
+            string message="City: " + city+ " Json: "+json;
+            ContentDialog customDialog = new ContentDialog
+            {
+                Title = "Custom Dialog",
+                Content = new TextBlock
+                {
+                    Text = message,
+                    TextWrapping = TextWrapping.Wrap,
+                    IsTextSelectionEnabled = true, // Enable text selection
+                    MinWidth = 400, // Set a minimum width for the dialog
+                },
+                CloseButtonText = "Close",
+            };
+
+            await customDialog.ShowAsync();
         }
-        
+
+        public async void WyswietlWeeklyDate()
+        {
+            string messege = "";
+            foreach (var weatherDay in WeeklyWeatherData)
+            {
+                messege+=($"Date: {weatherDay.Date} ");
+                messege+=($"Temperature: {weatherDay.Temperature} ");
+                messege+=($"Weather Description: {weatherDay.WeatherDescription}");
+                messege += "\n";
+            }
+            ContentDialog customDialog = new ContentDialog
+            {
+                Title = "Custom Dialog",
+                Content = new TextBlock
+                {
+                    Text = messege,
+                    TextWrapping = TextWrapping.Wrap,
+                    IsTextSelectionEnabled = true, // Enable text selection
+                    MinWidth = 400, // Set a minimum width for the dialog
+                },
+                CloseButtonText = "Close",
+            };
+            await customDialog.ShowAsync();
+        }
+
+
         public void LoadDayData()
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?lat=53,1281262873261&lon=18,0118665168758&units=metric&appid="+ API_KEY);
+                string json;
+                if (status == 1)
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
+                }
+                else
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid=" + API_KEY);
+                }
                 WeatherTodayDate weatherTodayDate= JsonConvert.DeserializeObject<WeatherTodayDate>(json);
-
                 double temperature = Math.Round(weatherTodayDate.Main.Temp);
                 string icon = "";
                 if (weatherTodayDate.Weather.Length > 0)
@@ -93,14 +148,23 @@ namespace Pogoda
 
         private void LoadData()
         {
+
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=metric&appid=" + API_KEY);
+                string json;
+                if (status == 1)
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/forecast?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
+                }
+                else
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&appid=" + API_KEY);
+                }
+
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
-                WeeklyWeatherData = new List<WeatherData>();
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
                 Dictionary<string, Dictionary<string, int>> iconCountByDay = new Dictionary<string, Dictionary<string, int>>();
-                
+
                 CultureInfo polishCulture = new CultureInfo("pl-PL");
                 DateTime currentDate = DateTime.Now.Date;
 
@@ -127,7 +191,7 @@ namespace Pogoda
                     {
                         iconCode = iconCode.Replace("n", "d");
                     }
-                    
+
                     if (!iconCountByDay.ContainsKey(day))
                     {
                         iconCountByDay.Add(day, new Dictionary<string, int>());
@@ -153,9 +217,11 @@ namespace Pogoda
 
                     bool dayExists = WeeklyWeatherData.Any(w => w.Date == day);
 
+                    BitmapImage WeatherIcon = new BitmapImage(new Uri("ms-appx:///Assets/WeatherIcons/" + iconCode + ".png"));
+
                     if (!dayExists)
                     {
-                        WeeklyWeatherData.Add(new WeatherData { Date = day, WeatherDescription = description });
+                        WeeklyWeatherData.Add(new WeatherData { Date = day, Temperature = temperature.ToString(), WeatherDescription = description, WeatherIcon = WeatherIcon });
                     }
                 }
 
@@ -183,6 +249,9 @@ namespace Pogoda
                         weatherDay.WeatherIcon = new BitmapImage(new Uri("ms-appx:///Assets/WeatherIcons/" + mostFrequentIcon + ".png"));
                     }
                 }
+                var emptyCollection = new List<WetherData>();
+                WeeklyData.ItemsSource = emptyCollection;
+                WeeklyData.ItemsSource = WeeklyWeatherData;
             }
         }
 
@@ -206,8 +275,8 @@ namespace Pogoda
             locationListBox.SelectionChanged += LocationListBox_SelectionChanged;
 
             // Add some sample location options to the ListBox
-            locationListBox.Items.Add("Location 1");
-            locationListBox.Items.Add("Location 2");
+            locationListBox.Items.Add("Bydgosz");
+            locationListBox.Items.Add("Lokalizacja");
             locationListBox.Items.Add("Location 3");
 
             // Add the ListBox to the panel
@@ -221,10 +290,35 @@ namespace Pogoda
             flyout.ShowAt(UstawieniaLokalizacji);
         }
 
-        private void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Handle the selection change event of the location ListBox
-            // You can write your logic here to handle the selected location
+            // Get the selected location
+            string selectedLocation = (string)((ListBox)sender).SelectedItem;
+
+            // Update the location text
+            UstawieniaLokalizacji.Content = selectedLocation;
+            
+            if(selectedLocation=="Location 3")
+            {
+                city = "Nuuk";
+                status = 2;
+                LoadData();
+                LoadDayData();
+            }
+            else if (selectedLocation == "Lokalizacja")
+            {
+                status = 1;
+                LoadLokalizacja();
+                LoadData();
+                LoadDayData();
+            }
+            else if (selectedLocation == "Bydgosz")
+            {
+                city = "Bydgoszcz";
+                status = 2;
+                LoadData();
+                LoadDayData();
+            }
         }
     }
 

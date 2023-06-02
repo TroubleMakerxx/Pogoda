@@ -39,7 +39,7 @@
 
 
 
-            <GridView ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
+            <GridView Name="WeeklyData" ItemsSource="{x:Bind WeeklyWeatherData}" HorizontalAlignment="Center" Margin="0,8">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
