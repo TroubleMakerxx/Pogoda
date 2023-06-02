@@ -38,14 +38,14 @@
                     <ColumnDefinition Width ="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Dzisiaj" Padding="0,10,0,0" Margin="0,0,0,-20"  Grid.ColumnSpan="2" Grid.Column="1" FontSize="50" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
+                <TextBlock Text="Dzisiaj" Padding="0,10,0,0" Margin="0,0,0,-15"  Grid.ColumnSpan="4" Grid.Column="0" FontSize="50" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
 
-                <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="right" Margin="5">
-                    <Button Name="SzczegulyPogody" Content="Szczegóły" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1"/>
-                    <Button Name="PogodaKrajprzycisk" Content="Mapa" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click" Grid.Row="1"/>
+                <StackPanel Orientation="Vertical" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="right" Margin="5">
+                    <Button Name="SzczegulyPogody" Background="White" Content="Szczegóły" Width="120" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1" Click="SzczegulyPogody_Click"/>
+                    <Button Name="PogodaKrajprzycisk" Background="White" Content="Miejsca" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="PogodaKrajprzycisk_Click" Grid.Row="1"/>
                 </StackPanel>
 
-                <TextBlock Text="55°C" Name="TemperaturaDnia" Grid.Column="1" FontSize="50" Margin="0,0,10,0" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
+                <TextBlock Text="55°C" Name="TemperaturaDnia" Grid.Column="1" FontSize="50" Margin="10" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
 
                 <Image Grid.Column="0" Margin="-30" Name="IkonkaDnia" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
            

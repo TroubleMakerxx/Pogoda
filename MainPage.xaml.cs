@@ -350,9 +350,14 @@ namespace Pogoda
         {
             localSettings.Values["SelectedLocation"] = location;
         }
+
+        private void SzczegulyPogody_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PogodaKraj));
+        }
     }
-    
-    
+
+
 
     public class WeatherData
     {
