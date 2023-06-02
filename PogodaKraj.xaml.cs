@@ -28,6 +28,7 @@ namespace Pogoda
         public PogodaKraj()
         {
             this.InitializeComponent();
+            LoadCountry();
             LoadInfo();
         }
 
@@ -36,12 +37,21 @@ namespace Pogoda
             Frame.Navigate(typeof(MainPage));
         }
         string API_KEY = ApiKey.Value;
+        string Country = "Poland";
+        
+        public void LoadCountry()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string myData = localSettings.Values["SelectedCountry"] as string;
+            Country = myData;
+            Kraj.Text = myData;
+        }
 
         public void LoadInfo()
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?lat=53,1281262873261&lon=18,0118665168758&units=metric&appid=" + API_KEY);
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q="+ Country + "&units=metric&appid=" + API_KEY);
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
 
                 double temperature = Math.Round(weatherTodayDate.Main.Temp);
