@@ -10,7 +10,7 @@
     <Grid Background="White">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="center">
 
             <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="100"  CornerRadius="16" Margin="10,10,10,10">
                 <Grid.Background>
@@ -60,7 +60,7 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <Border Background="Transparent">
-                                                    <Grid x:Name="grid"  Padding="32" MinHeight="200" MinWidth="200" CornerRadius="16">
+                                                    <Grid x:Name="grid"  Padding="32" MinHeight="200" MinWidth="250" CornerRadius="16">
                                                         <Grid.Background>
                                                             <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
                                                         </Grid.Background>
@@ -71,9 +71,9 @@
                                                             <RowDefinition Height="Auto"/>
                                                         </Grid.RowDefinitions>
 
-                                                        <TextBlock Text="{Binding Date}" FontSize="24" Foreground="#333333" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{Binding Date}" FontSize="25" Foreground="#333333" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                         <TextBlock Text="{Binding Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                                                        <Image Source="{Binding WeatherIcon}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"/>
+                                                        <Image Source="{Binding WeatherIcon}" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3"/>
                                                     </Grid>
                                                 </Border>
                                             </ControlTemplate>
