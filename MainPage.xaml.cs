@@ -261,7 +261,7 @@ namespace Pogoda
 
                 if (savedLocation == "Location 3")
                 {
-                    city = "Nuuk";
+                    city = "Kioto";
                     status = 2;
                     LoadData();
                     LoadDayData();
