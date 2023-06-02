@@ -26,6 +26,7 @@ using System.ServiceModel.Channels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
+using System.Text.RegularExpressions;
 
 namespace Pogoda
 {
@@ -42,6 +43,7 @@ namespace Pogoda
             WeeklyWeatherData = new List<WeatherData>();
             localSettings = ApplicationData.Current.LocalSettings;
             LoadSavedLocation();
+            LoadSavedCountry();
             LoadData();
             LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
@@ -56,6 +58,7 @@ namespace Pogoda
         double longitude;
         int status;
         string city = "Bydgoszcz";
+        string Country = "Poland";
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
@@ -71,49 +74,26 @@ namespace Pogoda
             longitude = currentPosition.Coordinate.Point.Position.Longitude;
         }
 
+        private void LoadSavedCountry()
+        {
+            if (localSettings.Values.ContainsKey("SelectedCountry"))
+            {
+                string savedCountry = localSettings.Values["SelectedCountry"].ToString();
+            }
+        }
+
+        private void SaveSelectedCountry(string country)
+        {
+            localSettings.Values["SelectedCountry"] = country;
+        }
+
         public async void wyswietl(string json)
         {
-            string message="City: " + city+ " Json: "+json;
-            ContentDialog customDialog = new ContentDialog
-            {
-                Title = "Custom Dialog",
-                Content = new TextBlock
-                {
-                    Text = message,
-                    TextWrapping = TextWrapping.Wrap,
-                    IsTextSelectionEnabled = true, // Enable text selection
-                    MinWidth = 400, // Set a minimum width for the dialog
-                },
-                CloseButtonText = "Close",
-            };
-
-            await customDialog.ShowAsync();
+            string message="City: " + city+ " Kraj: "+Country+" Json: "+json;
+            var dialog = new MessageDialog(message);
+            await dialog.ShowAsync();
         }
-
-        public async void WyswietlWeeklyDate()
-        {
-            string messege = "";
-            foreach (var weatherDay in WeeklyWeatherData)
-            {
-                messege+=($"Date: {weatherDay.Date} ");
-                messege+=($"Temperature: {weatherDay.Temperature} ");
-                messege+=($"Weather Description: {weatherDay.WeatherDescription}");
-                messege += "\n";
-            }
-            ContentDialog customDialog = new ContentDialog
-            {
-                Title = "Custom Dialog",
-                Content = new TextBlock
-                {
-                    Text = messege,
-                    TextWrapping = TextWrapping.Wrap,
-                    IsTextSelectionEnabled = true, // Enable text selection
-                    MinWidth = 400, // Set a minimum width for the dialog
-                },
-                CloseButtonText = "Close",
-            };
-            await customDialog.ShowAsync();
-        }
+        
 
 
         public void LoadDayData()
@@ -144,7 +124,13 @@ namespace Pogoda
                 string imagePath = "ms-appx:///Assets/WeatherIcons/"+icon+".png";
                 BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
                 IkonkaDnia.Source = bitmapImage;
-
+                string country = weatherTodayDate.Sys.Country;
+                json = webClient.DownloadString("https://restcountries.com/v3.1/alpha/" + country);
+                string pattern = @"""common"":""([^""]*)"",";
+                Match match = Regex.Match(json, pattern);
+                string result = match.Groups[1].Value;
+                Country = result;
+                SaveSelectedCountry(Country);
 
 
             }
@@ -266,12 +252,11 @@ namespace Pogoda
 
         private void LoadSavedLocation()
         {
-            // Check if a saved location exists in application settings
             if (localSettings.Values.ContainsKey("SelectedLocation"))
             {
                 string savedLocation = localSettings.Values["SelectedLocation"].ToString();
 
-                // Update the location text
+               
                 UstawieniaLokalizacji.Content = savedLocation;
 
                 if (savedLocation == "Location 3")
@@ -338,7 +323,7 @@ namespace Pogoda
             
             if(selectedLocation=="Location 3")
             {
-                city = "Nuuk";
+                city = "Kioto";
                 status = 2;
                 SaveSelectedLocation(selectedLocation);
                 LoadData();
@@ -348,6 +333,7 @@ namespace Pogoda
             {
                 status = 1;
                 LoadLokalizacja();
+                SaveSelectedLocation(selectedLocation);
                 LoadData();
                 LoadDayData();
             }
@@ -355,6 +341,7 @@ namespace Pogoda
             {
                 city = "Bydgoszcz";
                 status = 2;
+                SaveSelectedLocation(selectedLocation);
                 LoadData();
                 LoadDayData();
             }
