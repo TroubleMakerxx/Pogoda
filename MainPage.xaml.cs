@@ -217,7 +217,7 @@ namespace Pogoda
 
                 foreach (var kvp in temperatureDataByDay)
                 {
-                    double averageTemperature = kvp.Value.Average();
+                    double averageTemperature = kvp.Value.Max();
                     double roundedTemperature = Math.Round(averageTemperature);
 
                     var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == kvp.Key);
