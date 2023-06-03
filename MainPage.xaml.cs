@@ -87,9 +87,9 @@ namespace Pogoda
             localSettings.Values["SelectedCountry"] = country;
         }
 
-        public async void wyswietl(string json)
+        public async void wyswietl()
         {
-            string message="City: " + city+ " Kraj: "+Country+" Json: "+json;
+            string message="Nieprawidłowa nazwa lokalizacji";
             var dialog = new MessageDialog(message);
             await dialog.ShowAsync();
         }
@@ -286,7 +286,7 @@ namespace Pogoda
         private void UstawieniaLokalizacji_Click(object sender, RoutedEventArgs e)
         {
             StackPanel locationPanel = new StackPanel();
-            locationPanel.Background = new SolidColorBrush(Colors.White);
+            locationPanel.Background = new SolidColorBrush(Colors.LightBlue);
             locationPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
             locationPanel.BorderThickness = new Thickness(1);
             locationPanel.CornerRadius = new CornerRadius(4);
@@ -305,6 +305,26 @@ namespace Pogoda
             // Add the ListBox to the panel
             locationPanel.Children.Add(locationListBox);
 
+            // Create the "Add" button
+            Button addButton = new Button();
+            addButton.Content = "Add";
+            addButton.Click += AddButton_Click;
+            addButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
+            addButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
+
+
+            // Create the "Remove" button
+            Button removeButton = new Button();
+            removeButton.Content = "Remove";
+            removeButton.Click += RemoveButton_Click;
+            removeButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
+            removeButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
+
+
+            // Add the buttons to the panel
+            locationPanel.Children.Add(addButton);
+            locationPanel.Children.Add(removeButton);
+
             // Create a Flyout to display the panel
             Flyout flyout = new Flyout();
             flyout.Content = locationPanel;
@@ -312,6 +332,191 @@ namespace Pogoda
             // Attach the Flyout to the button
             flyout.ShowAt(UstawieniaLokalizacji);
         }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button addButton = (Button)sender;
+            StackPanel locationPanel = (StackPanel)addButton.Parent;
+
+            // Disable the "Add" and "Remove" buttons
+            foreach (UIElement element in locationPanel.Children)
+            {
+                if (element is Button button)
+                {
+                    button.IsEnabled = false;
+                    button.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            // Create a new StackPanel for entering the city name
+            StackPanel enterCityPanel = new StackPanel();
+            enterCityPanel.Background = new SolidColorBrush(Colors.LightBlue);
+            enterCityPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
+            enterCityPanel.BorderThickness = new Thickness(1);
+            enterCityPanel.CornerRadius = new CornerRadius(4);
+            enterCityPanel.Padding = new Thickness(8);
+
+            // Create a TextBox for entering the city name
+            TextBox cityNameTextBox = new TextBox();
+            cityNameTextBox.FontSize = 18;
+            cityNameTextBox.Margin = new Thickness(0, 0, 0, 8); // Add some margin at the bottom
+
+            // Create the "Add City" button
+            Button addCityButton = new Button();
+            addCityButton.Content = "Add";
+            addCityButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
+            addCityButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
+            addCityButton.Padding = new Thickness(12); // Adjust padding if needed
+            addCityButton.Click += (s, args) =>
+            {
+                string cityName = cityNameTextBox.Text.Trim();
+                if (!string.IsNullOrEmpty(cityName))
+                {
+                    // Add the city to the ApplicationDataContainer localSettings
+                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                    string spr=SprawdzLokacje(cityNameTextBox.Text);
+                    if (spr == "404")
+                    {
+                        wyswietl();
+                        return;
+                    }
+                    localSettings.Values[cityName] = cityNameTextBox.Text;
+
+                    // Add the city name to the ListBox
+                    ListBox locationListBox = (ListBox)locationPanel.Children[0];
+                    locationListBox.Items.Add(cityName);
+                }
+
+                // Remove the enter city panel and show the previous location panel
+                locationPanel.Children.Remove(enterCityPanel);
+                locationPanel.Visibility = Visibility.Visible;
+
+                // Enable the "Add" and "Remove" buttons
+                foreach (UIElement element in locationPanel.Children)
+                {
+                    if (element is Button button)
+                    {
+                        button.IsEnabled = true;
+                        button.Visibility = Visibility.Visible;
+                    }
+                }
+            };
+
+            // Create the "Cancel" button
+            Button cancelButton = new Button();
+            cancelButton.Content = "Cancel";
+            cancelButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
+            cancelButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
+            cancelButton.Padding = new Thickness(12); // Adjust padding if needed
+            cancelButton.Click += (s, args) =>
+            {
+                // Remove the enter city panel and show the previous location panel
+                locationPanel.Children.Remove(enterCityPanel);
+                locationPanel.Visibility = Visibility.Visible;
+
+                // Enable the "Add" and "Remove" buttons
+                foreach (UIElement element in locationPanel.Children)
+                {
+                    if (element is Button button)
+                    {
+                        button.IsEnabled = true;
+                        button.Visibility = Visibility.Visible;
+                    }
+                }
+            };
+
+            // Add the TextBox and buttons to the enter city panel
+            enterCityPanel.Children.Add(cityNameTextBox);
+            enterCityPanel.Children.Add(addCityButton);
+            enterCityPanel.Children.Add(cancelButton);
+
+            // Add the enter city panel at the correct index within the parent panel
+            locationPanel.Children.Insert(1, enterCityPanel);
+        }
+
+        public string SprawdzLokacje(string lokacja)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                try
+                {
+                    string json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/forecast?q={lokacja}&units=metric&appid={API_KEY}");
+                    string pattern = @"""cod"":""([^""]*)"",";
+                    Match match = Regex.Match(json, pattern);
+                    string result = match.Groups[1].Value;
+                    return result;
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Response is HttpWebResponse response)
+                    {
+                        if (response.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            return "404";
+                        }
+                    }
+                    return "404";
+                }
+            }
+        }
+
+
+        private async void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button removeButton = (Button)sender;
+            StackPanel locationPanel = (StackPanel)removeButton.Parent;
+
+            // Get the ListBox from the location panel
+            ListBox locationListBox = (ListBox)locationPanel.Children[0];
+
+            // Get the selected location from the ListBox
+            string selectedLocation = locationListBox.SelectedItem as string;
+
+            if (!string.IsNullOrEmpty(selectedLocation) && !IsBasicLocation(selectedLocation))
+            {
+                // Display a confirmation dialog box
+                ContentDialog confirmDialog = new ContentDialog
+                {
+                    Title = "Confirm Deletion",
+                    Content = $"Are you sure you want to delete the location '{selectedLocation}'?",
+                    PrimaryButtonText = "Delete",
+                    CloseButtonText = "Cancel"
+                };
+
+                ContentDialogResult result = await confirmDialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
+                {
+                    // User confirmed deletion, proceed with removing the location
+                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                    localSettings.Values.Remove(selectedLocation);
+
+                    // Remove the location name from the list
+                    locationListBox.Items.Remove(selectedLocation);
+
+                    // Set the location button to "Bydgoszcz"
+                    SaveSelectedLocation("Bydgoszcz");
+                    city = "Bydgoszcz";
+                    UstawieniaLokalizacji.Content = "Bydgoszcz";
+                    LoadData();
+                    LoadDayData();
+                }
+            }
+        }
+
+        private bool IsBasicLocation(string location)
+        {
+            // Define the basic locations
+            List<string> basicLocations = new List<string>
+    {
+        "Bydgosz",
+        "Lokalizacja",
+        "Location 3"
+    };
+
+            return basicLocations.Contains(location);
+        }
+
 
         public void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -344,6 +549,10 @@ namespace Pogoda
                 SaveSelectedLocation(selectedLocation);
                 LoadData();
                 LoadDayData();
+            }
+            else
+            {
+
             }
         }
         public void SaveSelectedLocation(string location)
