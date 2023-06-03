@@ -366,5 +366,6 @@ namespace Pogoda
         public string Date { get; set; }
         public string Temperature { get; set; }
         public string WeatherDescription { get; set; }
+        
     }
 }

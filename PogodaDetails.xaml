@@ -10,13 +10,18 @@
 
     <Grid Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
+        
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Name="Pogoda5dniaprzycisk" Content="Szczegóły pogody" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click"/>
+            <Grid Name="PogodaTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" CornerRadius="16">
+                <Grid.Background>
+                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" >Pogoda na dziś</TextBlock>
+            </Grid>
             <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
                 <Grid.Background>
-                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
+                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                 </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -37,12 +42,17 @@
                 <TextBlock Name="Humidity" Text="Wilgotność: {main.humidity}%" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
                 <TextBlock Name="WindSpeed" Text="Prędkośc wiatru: {wind.speed} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5"/>
                 <TextBlock Name="Visibility" Text="Widoczność: {main.visibility} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
-                <TextBlock Name="Sunrise" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7"/>
                 <TextBlock Name="Sunset" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8"/>
+                <TextBlock Name="Sunrise" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7"/>
+                
                 <TextBlock Name="Cloudiness" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="9"/>
                 <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="10"/>
             </Grid>
-
+            <Button Name="Pogoda5dniaprzycisk" Content="Powrót" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click">
+                <Button.Background>
+                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
+                </Button.Background>
+            </Button>
 
         </StackPanel>
     </Grid>

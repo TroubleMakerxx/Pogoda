@@ -74,15 +74,15 @@ namespace Pogoda
                     return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(_UnixTimeStamp+correction);
                 }
                 // Updating the UI with the additional weather information
-                TemperaturaDnia.Text = temperature.ToString() + "°C, " + description;
+                TemperaturaDnia.Text = temperature.ToString() + "°C, ";
                 MinMaxTemp.Text = "Minimalna: " + minTemperature.ToString() + "°C   Maksymalna: " + maxTemperature.ToString() + "°C";
                 Pressure.Text = "Ciśnienie: " + pressure.ToString() + " hPa";
                 Humidity.Text = "Wilgotność: " + humidity.ToString() + "%";
                 WindSpeed.Text = "Prędkość Wiatru: " + windSpeed.ToString() + " m/s";
-                Visibility.Text = visibility.ToString() + " metrów";
-                Sunrise.Text = UnixTimestampToDateTime(sunrise, 43500).ToString("HH:mm");
-                Sunset.Text = UnixTimestampToDateTime(sunset, 14900).ToString("HH:mm");
-
+                Visibility.Text = "Widocznośc na " + visibility.ToString() + " metrów";
+                Sunrise.Text = "Zachód słońca: " + UnixTimestampToDateTime(sunrise, 43500).ToString("HH:mm");
+                Sunset.Text = "Wschód słońca: " + UnixTimestampToDateTime(sunset, 14900).ToString("HH:mm");
+                Cloudiness.Text = cloudiness.ToString() + "%";
                 if (icon.Contains("n"))
                 {
                     icon = icon.Replace("n", "d");
