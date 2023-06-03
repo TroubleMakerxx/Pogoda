@@ -13,13 +13,8 @@
         
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid Name="PogodaTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" CornerRadius="16">
-                <Grid.Background>
-                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
-                </Grid.Background>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" >Pogoda na dziś</TextBlock>
-            </Grid>
-            <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
+            
+            <Grid x:Name="todayGrid" Padding="8" Margin="5" CornerRadius="16" >
                 <Grid.Background>
                     <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                 </Grid.Background>
@@ -34,19 +29,49 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock Name="TemperaturaDnia" Text=" {main.temp}°C, {weather[0].description}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
-                <TextBlock Name="MinMaxTemp" Text="Min: {main.temp_min}°C   Max: {main.temp_max}°C" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
-                <TextBlock Name="Pressure" Text="Ciśnienie: {main.pressure} hPa" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
-                <TextBlock Name="Humidity" Text="Wilgotność: {main.humidity}%" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
-                <TextBlock Name="WindSpeed" Text="Prędkośc wiatru: {wind.speed} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5"/>
-                <TextBlock Name="Visibility" Text="Widoczność: {main.visibility} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
-                <TextBlock Name="Sunset" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8"/>
-                <TextBlock Name="Sunrise" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="DZISIAJ" FontSize="50" Margin="0" Foreground="Black" FontWeight="ExtraBold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Name="IkonkaDnia" Width="200" Height="200" Margin="-50, -50, 5, -50" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                    <TextBlock Name="TemperaturaDnia" Text=" {main.temp}°C, {weather[0].description}" FontSize="60" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+                </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Name="MinTemp" Margin="10,2,10,2" Text="Min: {main.temp_min}°C   Max: {main.temp_max}°C" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+                    <TextBlock Name="MaxTemp" Margin="10,2,10,2" Text="Min: {main.temp_min}°C   Max: {main.temp_max}°C" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <TextBlock Margin="10,2,10,2" Name="Pressure" Text="Ciśnienie: {main.pressure} hPa" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <TextBlock Name="FeelsLike" Margin="10,2,10,2" Text="odczuwalna" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+                    <TextBlock Name="Humidity" Margin="10,2,10,2" Text="Wilgotność: {main.humidity}%" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
+                    <TextBlock Name="Cloudiness" Margin="10,2,10,2" FontSize="25" Text="Zachmurzenie" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1"/>
+                    <TextBlock Name="WindSpeed" Margin="10,2,10,2" Text="Prędkośc wiatru: {wind.speed} m/s" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"/>
+                    <TextBlock Name="Visibility" Margin="10,2,10,2" Text="Widoczność: {main.visibility} m/s" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
+                    <TextBlock Name="Sunset" Margin="10,2,10,2" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0"/>
+                    <TextBlock Name="Sunrise" Margin="10,2,10,2" FontSize="25" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1"/>
+                    
+
+
+
+                </Grid>
+               
                 
-                <TextBlock Name="Cloudiness" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="9"/>
-                <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="10"/>
             </Grid>
             <Button Name="Pogoda5dniaprzycisk" Content="Powrót" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click">
                 <Button.Background>

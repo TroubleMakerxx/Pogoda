@@ -55,7 +55,7 @@ namespace Pogoda
             {
                 string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q="+ Country + "&units=metric&appid=" + API_KEY);
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
-
+                double feelsLike = Math.Round(weatherTodayDate.Main.FeelsLike);
                 double minTemperature = Math.Round(weatherTodayDate.Main.temp_min);
                 double maxTemperature = Math.Round(weatherTodayDate.Main.temp_max);
                 int visibility = weatherTodayDate.Visibility;
@@ -74,15 +74,17 @@ namespace Pogoda
                     return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(_UnixTimeStamp+correction);
                 }
                 // Updating the UI with the additional weather information
-                TemperaturaDnia.Text = temperature.ToString() + "°C, ";
-                MinMaxTemp.Text = "Minimalna: " + minTemperature.ToString() + "°C   Maksymalna: " + maxTemperature.ToString() + "°C";
-                Pressure.Text = "Ciśnienie: " + pressure.ToString() + " hPa";
+                TemperaturaDnia.Text = temperature.ToString() + "°C";
+                MinTemp.Text = "Minimalna: " + minTemperature.ToString() + "°C";
+                MaxTemp.Text = "Maksymalna: " + maxTemperature.ToString() + "°C";
+                Pressure.Text = "Ciśnienie: " + pressure.ToString() + " hPa  ";
                 Humidity.Text = "Wilgotność: " + humidity.ToString() + "%";
-                WindSpeed.Text = "Prędkość Wiatru: " + windSpeed.ToString() + " m/s";
-                Visibility.Text = "Widocznośc na " + visibility.ToString() + " metrów";
-                Sunrise.Text = "Zachód słońca: " + UnixTimestampToDateTime(sunrise, 43500).ToString("HH:mm");
-                Sunset.Text = "Wschód słońca: " + UnixTimestampToDateTime(sunset, 14900).ToString("HH:mm");
-                Cloudiness.Text = cloudiness.ToString() + "%";
+                WindSpeed.Text = "Wiatr: " + windSpeed.ToString() + " m/s";
+                Visibility.Text = "Widocznośc: " + visibility.ToString() + " m";
+                Sunrise.Text = "Zachód: " + UnixTimestampToDateTime(sunrise, 43500).ToString("HH:mm");
+                Sunset.Text = "Wschód: " + UnixTimestampToDateTime(sunset, 14900).ToString("HH:mm");
+                Cloudiness.Text = "Zachmurzenie: " + cloudiness.ToString() + "%";
+                FeelsLike.Text = "Odczuwalna: " + feelsLike.ToString() + "°C";
                 if (icon.Contains("n"))
                 {
                     icon = icon.Replace("n", "d");
