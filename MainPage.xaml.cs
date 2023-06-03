@@ -346,7 +346,7 @@ namespace Pogoda
                 LoadDayData();
             }
         }
-        private void SaveSelectedLocation(string location)
+        public void SaveSelectedLocation(string location)
         {
             localSettings.Values["SelectedLocation"] = location;
         }

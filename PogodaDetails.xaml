@@ -26,14 +26,21 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 <TextBlock Name="TemperaturaDnia" Text=" {main.temp}°C, {weather[0].description}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
                 <TextBlock Name="MinMaxTemp" Text="Min: {main.temp_min}°C   Max: {main.temp_max}°C" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
-                <TextBlock Name="Pressure" Text="Pressure: {main.pressure} hPa" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
-                <TextBlock Name="Humidity" Text="Humidity: {main.humidity}%" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
-                <TextBlock Name="WindSpeed" Text="Wind Speed: {wind.speed} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5"/>
-                <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
+                <TextBlock Name="Pressure" Text="Ciśnienie: {main.pressure} hPa" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>
+                <TextBlock Name="Humidity" Text="Wilgotność: {main.humidity}%" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
+                <TextBlock Name="WindSpeed" Text="Prędkośc wiatru: {wind.speed} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5"/>
+                <TextBlock Name="Visibility" Text="Widoczność: {main.visibility} m/s" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
+                <TextBlock Name="Sunrise" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7"/>
+                <TextBlock Name="Sunset" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8"/>
+                <TextBlock Name="Cloudiness" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="9"/>
+                <Image Name="IkonkaDnia" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="10"/>
             </Grid>
 
 
