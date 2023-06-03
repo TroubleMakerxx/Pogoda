@@ -29,7 +29,7 @@ namespace Pogoda
         public PogodaDetails()
         {
             this.InitializeComponent();
-            LoadCountry();
+            LoadLoacation();
             LoadInfo();
         }
 
@@ -39,13 +39,13 @@ namespace Pogoda
             Frame.Navigate(typeof(MainPage));
         }
         string API_KEY = ApiKey.Value;
-        string Country = "Poland";
-        
-        public void LoadCountry()
+        string Location = "Bydgoszcz";
+
+        public void LoadLoacation()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            string myData = localSettings.Values["SelectedCountry"] as string;
-            Country = myData;
+            string myData = localSettings.Values["SelectedCity"] as string;
+            Location = myData;
 
         }
 
@@ -53,7 +53,7 @@ namespace Pogoda
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q="+ Country + "&units=metric&appid=" + API_KEY);
+                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q="+ Location + "&units=metric&appid=" + API_KEY);
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
 
                 double minTemperature = Math.Round(weatherTodayDate.Main.temp_min);

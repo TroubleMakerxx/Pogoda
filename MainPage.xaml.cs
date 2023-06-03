@@ -50,7 +50,11 @@ namespace Pogoda
 
         }
 
-        
+        private void SaveSelectedCity(string city)
+        {
+            localSettings.Values["SelectedCity"] = city;
+        }
+
 
         string API_KEY = ApiKey.Value;
 
@@ -59,6 +63,7 @@ namespace Pogoda
         int status;
         string city = "Bydgoszcz";
         string Country = "Poland";
+        
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
@@ -562,6 +567,7 @@ namespace Pogoda
 
         private void SzczegulyPogody_Click(object sender, RoutedEventArgs e)
         {
+            SaveSelectedCity(city);
             Frame.Navigate(typeof(Pogoda.PogodaDetails));
         }
     }
