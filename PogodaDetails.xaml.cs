@@ -81,8 +81,8 @@ namespace Pogoda
                 Humidity.Text = "Wilgotność: " + humidity.ToString() + "%";
                 WindSpeed.Text = "Wiatr: " + windSpeed.ToString() + " m/s";
                 Visibility.Text = "Widocznośc: " + visibility.ToString() + " m";
-                Sunrise.Text = "Zachód: " + UnixTimestampToDateTime(sunrise, 43500).ToString("HH:mm");
-                Sunset.Text = "Wschód: " + UnixTimestampToDateTime(sunset, 14900).ToString("HH:mm");
+                Sunrise.Text = "Zachód: " + UnixTimestampToDateTime(sunset, 7200).ToString("HH:mm");
+                Sunset.Text = "Wschód: " + UnixTimestampToDateTime(sunrise, 7200).ToString("HH:mm");
                 Cloudiness.Text = "Zachmurzenie: " + cloudiness.ToString() + "%";
                 FeelsLike.Text = "Odczuwalna: " + feelsLike.ToString() + "°C";
                 if (icon.Contains("n"))
