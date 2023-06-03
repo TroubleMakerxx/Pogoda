@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     >
+    
     <Grid Background="White">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
