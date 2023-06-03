@@ -8,21 +8,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="White">
+    <Grid Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image Stretch="Fill" Source="https://c1.wallpaperflare.com/preview/804/778/325/sky-background-nature-blue.jpg" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
 
-        <Button Name="Pogoda5dniaprzycisk" Content="Pogoda Na następne dni" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click"/>
-        <Button Content="Szczegóły pogody" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16"/>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-
-            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="10,10,10,10">
-                <Grid.Background>
-                    <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
-                </Grid.Background>
-                <TextBlock Name="Kraj" Text="Polska" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Grid>
-
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Name="Pogoda5dniaprzycisk" Content="Szczegóły pogody" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click"/>
             <Grid x:Name="todayGrid" Margin="10,10,10,10" CornerRadius="16">
                 <Grid.Background>
                     <SolidColorBrush Color="LightSkyBlue" Opacity="0.75"/>
@@ -36,7 +27,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Pogoda na dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="Dzisiaj" FontSize="24" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 <TextBlock Name="TemperaturaDnia" Text=" {main.temp}°C, {weather[0].description}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
                 <TextBlock Name="MinMaxTemp" Text="Min: {main.temp_min}°C   Max: {main.temp_max}°C" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"/>
                 <TextBlock Name="Pressure" Text="Pressure: {main.pressure} hPa" FontSize="16" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3"/>

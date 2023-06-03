@@ -353,7 +353,7 @@ namespace Pogoda
 
         private void SzczegulyPogody_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(PogodaKraj));
+            Frame.Navigate(typeof(Pogoda.PogodaDetails));
         }
     }
 
