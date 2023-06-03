@@ -46,7 +46,10 @@ namespace Pogoda
             Country = myData;
             Kraj.Text = myData;
         }
-
+        private void Pogoda5dniaprzycisk_Click()
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
         public void LoadInfo()
         {
             using (WebClient webClient = new WebClient())

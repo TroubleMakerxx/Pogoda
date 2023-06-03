@@ -39,7 +39,7 @@
                     <ColumnDefinition Width ="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Dzisiaj" Padding="0,10,0,0" Margin="0,0,0,-15"  Grid.ColumnSpan="4" Grid.Column="0" FontSize="50" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
+                <TextBlock Text="Obecnie" Padding="0,10,0,0" Margin="0,0,0,-15"  Grid.ColumnSpan="4" Grid.Column="0" FontSize="50" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
 
                 <StackPanel Orientation="Vertical" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="right" Margin="5">
                     <Button Name="SzczegulyPogody" Background="White" Content="Szczegóły" Width="120" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" FontSize="20" Foreground="Black" FontWeight="Bold" CornerRadius="16" Grid.Row="1" Click="SzczegulyPogody_Click"/>

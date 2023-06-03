@@ -35,7 +35,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="DZISIAJ" FontSize="50" Margin="0" Foreground="Black" FontWeight="ExtraBold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Text="Obecnie" FontSize="50" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Image Name="IkonkaDnia" Width="200" Height="200" Margin="-50, -50, 5, -50" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                     <TextBlock Name="TemperaturaDnia" Text=" {main.temp}°C, {weather[0].description}" FontSize="60" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
