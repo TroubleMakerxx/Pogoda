@@ -357,7 +357,8 @@ namespace Pogoda
 
             // Create the "Add" button
             Button addButton = new Button();
-            addButton.Content = "Add";
+            addButton.Content = "Dodaj";
+            addButton.Width = 150;
             addButton.Click += AddButton_Click;
             addButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
             addButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
@@ -365,7 +366,9 @@ namespace Pogoda
 
             // Create the "Remove" button
             Button removeButton = new Button();
-            removeButton.Content = "Remove";
+            
+            removeButton.Content = "Usuń";
+            removeButton.Width = 150;
             removeButton.Click += RemoveButton_Click;
             removeButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
             removeButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
@@ -413,7 +416,8 @@ namespace Pogoda
 
             // Create the "Add City" button
             Button addCityButton = new Button();
-            addCityButton.Content = "Add";
+            addCityButton.Content = "Dodaj";
+            addCityButton.Width = 130;
             addCityButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
             addCityButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
             addCityButton.Padding = new Thickness(12); // Adjust padding if needed
@@ -467,7 +471,8 @@ namespace Pogoda
 
             // Create the "Cancel" button
             Button cancelButton = new Button();
-            cancelButton.Content = "Cancel";
+            cancelButton.Content = "Anuluj";
+            cancelButton.Width = 130;
             cancelButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
             cancelButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
             cancelButton.Padding = new Thickness(12); // Adjust padding if needed
