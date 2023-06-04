@@ -337,8 +337,6 @@ namespace Pogoda
             locationListBox.Items.Add("Bydgoszcz");
             locationListBox.Items.Add("Warszawa");
             locationListBox.Items.Add("GPS");
-            
-
             if (localSettings.Values.ContainsKey("SelectionCity"))
             {
             List<string> savedLocations = GetSelection();
@@ -455,7 +453,6 @@ namespace Pogoda
             enterCityPanel.Children.Add(cancelButton);
             locationPanel.Children.Insert(1, enterCityPanel);
         }
-
         public string SprawdzLokacje(string lokacja)
         {
             using (WebClient webClient = new WebClient())
@@ -481,8 +478,6 @@ namespace Pogoda
                 }
             }
         }
-
-
         private async void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
             Button removeButton = (Button)sender;
@@ -516,7 +511,6 @@ namespace Pogoda
                 }
             }
         }
-
         private bool IsBasicLocation(string location)
         {
             List<string> basicLocations = new List<string>
@@ -528,8 +522,6 @@ namespace Pogoda
 
             return basicLocations.Contains(location);
         }
-
-
         public void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedLocation = (string)((ListBox)sender).SelectedItem;
@@ -578,20 +570,15 @@ namespace Pogoda
         {
             localSettings.Values["SelectedLocation"] = location;
         }
-
         private void SzczegulyPogody_Click(object sender, RoutedEventArgs e)
         {
             SaveSelectedCity(city);
             Frame.Navigate(typeof(Pogoda.PogodaDetails));
         }
     }
-
-
-
     public class WeatherData
     {
         public BitmapImage WeatherIcon { get; set; }
-
         public string Date { get; set; }
         public string Temperature { get; set; }
         public string WeatherDescription { get; set; }
