@@ -289,21 +289,21 @@ namespace Pogoda
 
                 UstawieniaLokalizacji.Content = savedLocation;
 
-                if (savedLocation == "Location 3")
+                if (savedLocation == "Warszawa")
                 {
-                    city = "Kioto";
+                    city = "Warszawa";
                     status = 2;
                     LoadData();
                     LoadDayData();
                 }
-                else if (savedLocation == "Lokalizacja")
+                else if (savedLocation == "GPS")
                 {
                     status = 1;
                     LoadLokalizacja();
                     LoadData();
                     LoadDayData();
                 }
-                else if (savedLocation == "Bydgosz")
+                else if (savedLocation == "Bydgoszcz")
                 {
                     city = "Bydgoszcz";
                     status = 2;
@@ -337,8 +337,9 @@ namespace Pogoda
 
             // Add some sample location options to the ListBox
             locationListBox.Items.Add("Bydgoszcz");
-            locationListBox.Items.Add("Lokalizacja");
-            locationListBox.Items.Add("Location 3");
+            locationListBox.Items.Add("Warszawa");
+            locationListBox.Items.Add("GPS");
+            
 
             if (localSettings.Values.ContainsKey("SelectionCity"))
             {
