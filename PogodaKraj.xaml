@@ -20,6 +20,15 @@
                 <Grid.Background>
                     <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                 </Grid.Background>
+                <StackPanel x:Name="WeatherStackPanel">
+                    <StackPanel.Resources>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="100"/>
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="Stretch" Value="Uniform"/>
+                        </Style>
+                    </StackPanel.Resources>
+                </StackPanel>
                 <GridView ItemsSource="{Binding WeatherCollection}">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
