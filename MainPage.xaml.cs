@@ -97,11 +97,21 @@ namespace Pogoda
 
         }
 
-        public void LoadLokalizacja()
+        public string LoadLokalizacja()
         {
-            Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
-            latitude = currentPosition.Coordinate.Point.Position.Latitude;
-            longitude = currentPosition.Coordinate.Point.Position.Longitude;
+            string Spr = "OK";
+            try
+            {
+                Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
+                latitude = currentPosition.Coordinate.Point.Position.Latitude;
+                longitude = currentPosition.Coordinate.Point.Position.Longitude;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Spr = "NO";
+                return Spr;
+            }
+            return Spr;
         }
 
         private void LoadSavedCountry()
@@ -123,7 +133,13 @@ namespace Pogoda
             var dialog = new MessageDialog(message);
             await dialog.ShowAsync();
         }
-        
+
+        public async void WyswietlBuG()
+        {
+            string message = "Włącz Lokalizację";
+            var dialog = new MessageDialog(message);
+            await dialog.ShowAsync();
+        }
 
 
         public void LoadDayData()
@@ -298,10 +314,21 @@ namespace Pogoda
                 }
                 else if (savedLocation == "GPS")
                 {
-                    status = 1;
-                    LoadLokalizacja();
-                    LoadData();
-                    LoadDayData();
+                    string spr;
+                    spr = LoadLokalizacja();
+                    if (spr == "NO")
+                    {
+                        WyswietlBuG();
+                        return;
+                    }
+                    else
+                    {
+                        status = 1;
+                        SaveSelectedLocation(savedLocation);
+                        city = spr;
+                        LoadData();
+                        LoadDayData();
+                    }
                 }
                 else if (savedLocation == "Bydgoszcz")
                 {
@@ -605,11 +632,21 @@ namespace Pogoda
             
             if (selectedLocation == "GPS")
             {
-                status = 1;
-                LoadLokalizacja();
-                SaveSelectedLocation(selectedLocation);
-                LoadData();
-                LoadDayData();
+                string spr;
+                spr=LoadLokalizacja();
+                if (spr == "NO")
+                {
+                    WyswietlBuG();
+                    return;
+                }
+                else
+                {
+                    status = 1;
+                    SaveSelectedLocation(selectedLocation);
+                    city = spr;
+                    LoadData();
+                    LoadDayData();
+                }
             }
             else if (selectedLocation == "Bydgosz")
             {
