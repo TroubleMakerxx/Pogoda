@@ -76,7 +76,7 @@ namespace Pogoda
 
             // Split the serialized string by the comma separator to get the individual city names
             List<string> cityList = serializedCityList.Split(',').ToList();
-            cityList.RemoveAll(location => location == "Location 3" || location == "Lokalizacja" || location == "Bydgoszcz");
+            cityList.RemoveAll(location => location == "Warszawa" || location == "GPS" || location == "Bydgoszcz");
 
             return cityList;
         }
@@ -586,9 +586,9 @@ namespace Pogoda
             // Define the basic locations
             List<string> basicLocations = new List<string>
         {
-        "Bydgosz",
-        "Lokalizacja",
-        "Location 3"
+        "Bydgoszcz",
+        "GPS",
+        "Warszawa"
         };
 
             return basicLocations.Contains(location);
@@ -603,15 +603,7 @@ namespace Pogoda
             // Update the location text
             UstawieniaLokalizacji.Content = selectedLocation;
             
-            if(selectedLocation=="Location 3")
-            {
-                city = "Kioto";
-                status = 2;
-                SaveSelectedLocation(selectedLocation);
-                LoadData();
-                LoadDayData();
-            }
-            else if (selectedLocation == "Lokalizacja")
+            if (selectedLocation == "GPS")
             {
                 status = 1;
                 LoadLokalizacja();
