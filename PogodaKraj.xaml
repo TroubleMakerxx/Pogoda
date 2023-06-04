@@ -14,42 +14,38 @@
 
        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <Grid x:Name="gridmian"  Padding="10" MaxWidth="460" MaxHeight="75"  CornerRadius="16" Margin="5,5,5,5">
-                <Grid.Background>
-                    <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
-                </Grid.Background>
-                <TextBlock Name="Krai" Text="Polska" FontSize="36" Margin="0" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Grid>
+            
 
-            <Grid x:Name="todayGrid" Margin="5,5,5,5" CornerRadius="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid x:Name="todayGrid" Margin="5,5,5,5" CornerRadius="16" VerticalAlignment="Top" HorizontalAlignment="Center" >
                 <Grid.Background>
                     <SolidColorBrush Color="LightGoldenrodYellow" Opacity="0.30"/>
                 </Grid.Background>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
                 <GridView ItemsSource="{Binding WeatherCollection}">
-                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="City" Text="{Binding Place}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontSize="36" Foreground="Black" FontWeight="Bold"/>
-                        <Image Source="{Binding WeatherIcon}" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Text="{Binding Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
-                    </Grid>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5,5,5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80"/>
+                                    <RowDefinition Height="80"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="City" Text="{Binding Place}" Padding="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="30" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                
+                                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"> 
+                                    <Image Source="{Binding WeatherIcon}" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" Margin="-25,-25,-25,-25"/>
+                                    <TextBlock Text="{Binding Temperature}" FontSize="32" Foreground="#FF5722" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" />
+                                </StackPanel>
+                                </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                 </GridView>
             </Grid>
             <Button Name="Pogoda5dniaprzycisk" Content="Powrót" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" FontSize="36" Foreground="Black" FontWeight="Bold" CornerRadius="16" Click="Pogoda5dniaprzycisk_Click">

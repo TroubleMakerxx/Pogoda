@@ -32,8 +32,9 @@ namespace Pogoda
             LoadCountry();
             LoadInfo();
             this.DataContext = new ViewModel();
+
         }
-        
+
         public class Weather
         {
             public string Place { get; set; }
@@ -75,11 +76,33 @@ namespace Pogoda
                         BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
                         // Use a service to populate your data, such as an API call.
                         // This is just dummy data for illustration.
-                        WeatherCollection.Add(new Weather { Place = M, WeatherIcon = bitmapImage, Temperature = temperature.ToString() });
+                        WeatherCollection.Add(new Weather { Place = M, WeatherIcon = bitmapImage, Temperature = temperature.ToString()+ "°C" });
                         //Add other 8 cities here in similar manner
 
                     }
+                    string jsonPoland = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=Poland&units=metric&appid=" + API_KEY);
+                    WeatherTodayDate weatherTodayDatePoland = JsonConvert.DeserializeObject<WeatherTodayDate>(jsonPoland);
+                    double temperaturePoland = Math.Round(weatherTodayDatePoland.Main.Temp);
+                    
+                }
 
+                using (WebClient webClient = new WebClient())
+                {
+                    string API_KEY = ApiKey.Value;
+                    string M = "Poland";    // here, M is predefined as Poland
+                    string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=" + M + "&units=metric&appid=" + API_KEY);
+                    WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
+                    double temperature = Math.Round(weatherTodayDate.Main.Temp);
+
+                    string icon = weatherTodayDate.Weather[0].Icon;
+                    if (icon.Contains("n"))
+                    {
+                        icon = icon.Replace("n", "d");
+                    }
+                    string imagePath = "ms-appx:///Assets/WeatherIcons/" + icon + ".png";
+                    BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                   // Add data to your UI elements
+ 
                 }
 
             }

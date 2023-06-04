@@ -73,7 +73,7 @@ namespace Pogoda
                 {
                     return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(_UnixTimeStamp+correction);
                 }
-                // Updating the UI with the additional weather information
+                
                 TemperaturaDnia.Text = temperature.ToString() + "°C";
                 MinTemp.Text = "Minimalna: " + minTemperature.ToString() + "°C";
                 MaxTemp.Text = "Maksymalna: " + maxTemperature.ToString() + "°C";
