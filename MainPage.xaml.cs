@@ -47,7 +47,6 @@ namespace Pogoda
             LoadData();
             LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
-
         }
 
         private void SaveSelectedCity(string city)
@@ -55,6 +54,32 @@ namespace Pogoda
             localSettings.Values["SelectedCity"] = city;
         }
 
+        private void AddSelection(List<string> city)
+        {
+            // Convert the cityList to a serialized string
+            string serializedCityList = string.Join(",", city);
+
+            // Store the serialized string in the ApplicationDataContainer
+            localSettings.Values["SelectionCity"] = serializedCityList;
+        }
+
+        private List<string> GetSelection()
+        {
+            // Retrieve the serialized string from the ApplicationDataContainer
+            string serializedCityList = localSettings.Values["SelectionCity"] as string;
+
+            // If the serializedCityList is null or empty, return an empty list
+            if (string.IsNullOrEmpty(serializedCityList))
+            {
+                return new List<string>();
+            }
+
+            // Split the serialized string by the comma separator to get the individual city names
+            List<string> cityList = serializedCityList.Split(',').ToList();
+            cityList.RemoveAll(location => location == "Location 3" || location == "Lokalizacja" || location == "Bydgoszcz");
+
+            return cityList;
+        }
 
         string API_KEY = ApiKey.Value;
 
@@ -261,7 +286,7 @@ namespace Pogoda
             {
                 string savedLocation = localSettings.Values["SelectedLocation"].ToString();
 
-               
+
                 UstawieniaLokalizacji.Content = savedLocation;
 
                 if (savedLocation == "Location 3")
@@ -285,6 +310,14 @@ namespace Pogoda
                     LoadData();
                     LoadDayData();
                 }
+                else
+                {
+                    city = UstawieniaLokalizacji.Content.ToString();
+                    status = 2;
+                    SaveSelectedLocation(city);
+                    LoadData();
+                    LoadDayData();
+                }
             }
         }
 
@@ -303,9 +336,20 @@ namespace Pogoda
             locationListBox.SelectionChanged += LocationListBox_SelectionChanged;
 
             // Add some sample location options to the ListBox
-            locationListBox.Items.Add("Bydgosz");
+            locationListBox.Items.Add("Bydgoszcz");
             locationListBox.Items.Add("Lokalizacja");
             locationListBox.Items.Add("Location 3");
+
+            if (localSettings.Values.ContainsKey("SelectionCity"))
+            {
+            List<string> savedLocations = GetSelection();
+
+            foreach (string location in savedLocations)
+            {
+            locationListBox.Items.Add(location);
+            }
+            }
+
 
             // Add the ListBox to the panel
             locationPanel.Children.Add(locationListBox);
@@ -379,7 +423,7 @@ namespace Pogoda
                 {
                     // Add the city to the ApplicationDataContainer localSettings
                     ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                    string spr=SprawdzLokacje(cityNameTextBox.Text);
+                    string spr = SprawdzLokacje(cityNameTextBox.Text);
                     if (spr == "404")
                     {
                         wyswietl();
@@ -387,9 +431,22 @@ namespace Pogoda
                     }
                     localSettings.Values[cityName] = cityNameTextBox.Text;
 
-                    // Add the city name to the ListBox
+                    // Add the city name to the ListBox if it doesn't already exist
                     ListBox locationListBox = (ListBox)locationPanel.Children[0];
-                    locationListBox.Items.Add(cityName);
+                    if (!locationListBox.Items.Contains(cityName))
+                    {
+                        locationListBox.Items.Add(cityName);
+                    }
+
+                    // Create a list of city names from the ListBox items
+                    List<string> cityList = new List<string>();
+                    foreach (var item in locationListBox.Items)
+                    {
+                        cityList.Add(item.ToString());
+                    }
+
+                    // Save the list of city names
+                    AddSelection(cityList);
                 }
 
                 // Remove the enter city panel and show the previous location panel
@@ -494,10 +551,19 @@ namespace Pogoda
                 {
                     // User confirmed deletion, proceed with removing the location
                     ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-                    localSettings.Values.Remove(selectedLocation);
+
+                    // Retrieve the saved locations from local settings
+                    List<string> cityList = GetSelection();
+
+                    // Remove the selected location from the cityList
+                    cityList.Remove(selectedLocation);
+
+                    // Save the updated list of city names
+                    AddSelection(cityList);
 
                     // Remove the location name from the list
-                    locationListBox.Items.Remove(selectedLocation);
+                    ListBox listBox = (ListBox)locationPanel.Children[0];
+                    listBox.Items.Remove(selectedLocation);
 
                     // Set the location button to "Bydgoszcz"
                     SaveSelectedLocation("Bydgoszcz");
@@ -513,11 +579,11 @@ namespace Pogoda
         {
             // Define the basic locations
             List<string> basicLocations = new List<string>
-    {
+        {
         "Bydgosz",
         "Lokalizacja",
         "Location 3"
-    };
+        };
 
             return basicLocations.Contains(location);
         }
@@ -557,6 +623,14 @@ namespace Pogoda
             }
             else
             {
+                if (UstawieniaLokalizacji.Content != null)
+                {
+                    city = UstawieniaLokalizacji.Content.ToString();
+                    status = 2;
+                    SaveSelectedLocation(city);
+                    LoadData();
+                    LoadDayData();
+                }
 
             }
         }
