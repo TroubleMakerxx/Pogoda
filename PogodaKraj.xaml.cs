@@ -16,14 +16,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-
-//Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Pogoda
 {
-    /// <summary>
-    /// Pusta strona, która może być używana samodzielnie lub do której można nawigować wewnątrz ramki.
-    /// </summary>
+
     public sealed partial class PogodaKraj : Page
     {
         public PogodaKraj()
@@ -53,9 +48,6 @@ namespace Pogoda
             }
 
             string[] miasta = { "Warszawa", "Poznań", "Gdańsk", "Wrocław", "Kraków", "Łódź", "Szczecin", "Bydgoszcz", "Lublin" };
-
-   
-
             private void PopulateData()
             {
                 using (WebClient webClient = new WebClient())
@@ -74,11 +66,7 @@ namespace Pogoda
                         }
                         string imagePath = "ms-appx:///Assets/WeatherIcons/" + icon + ".png";
                         BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
-                        // Use a service to populate your data, such as an API call.
-                        // This is just dummy data for illustration.
                         WeatherCollection.Add(new Weather { Place = M, WeatherIcon = bitmapImage, Temperature = temperature.ToString()+ "°C" });
-                        //Add other 8 cities here in similar manner
-
                     }
                     string jsonPoland = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=Poland&units=metric&appid=" + API_KEY);
                     WeatherTodayDate weatherTodayDatePoland = JsonConvert.DeserializeObject<WeatherTodayDate>(jsonPoland);
@@ -89,7 +77,7 @@ namespace Pogoda
                 using (WebClient webClient = new WebClient())
                 {
                     string API_KEY = ApiKey.Value;
-                    string M = "Poland";    // here, M is predefined as Poland
+                    string M = "Poland";
                     string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=" + M + "&units=metric&appid=" + API_KEY);
                     WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
                     double temperature = Math.Round(weatherTodayDate.Main.Temp);
@@ -101,8 +89,6 @@ namespace Pogoda
                     }
                     string imagePath = "ms-appx:///Assets/WeatherIcons/" + icon + ".png";
                     BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
-                   // Add data to your UI elements
- 
                 }
 
             }
@@ -114,13 +100,11 @@ namespace Pogoda
         }
         string API_KEY = ApiKey.Value;
         string Country = "Poland";
-        
         public void LoadCountry()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             string myData = localSettings.Values["SelectedCountry"] as string;
             Country = myData;
-            //Kraj.Text = myData;
         }
         private void Pogoda5dniaprzycisk_Click()
         {

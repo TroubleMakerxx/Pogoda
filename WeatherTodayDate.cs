@@ -22,13 +22,11 @@ namespace Pogoda
         public string Name { get; set; }
         public int Cod { get; set; }
     }
-
     internal class CoordData
     {
         public double Lon { get; set; }
         public double Lat { get; set; }
     }
-
     internal class WeatherDetails
     {
         public int Id { get; set; }
@@ -36,7 +34,6 @@ namespace Pogoda
         public string Description { get; set; }
         public string Icon { get; set; }
     }
-
     internal class MainWeatherData
     {
         public double Temp { get; set; }
@@ -46,18 +43,15 @@ namespace Pogoda
         public int Pressure { get; set; }
         public int Humidity { get; set; }
     }
-
     internal class WindData
     {
         public double Speed { get; set; }
         public int Deg { get; set; }
     }
-
     internal class CloudData
     {
         public int All { get; set; }
     }
-
     internal class SysData
     {
         public int Type { get; set; }

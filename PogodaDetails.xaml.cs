@@ -16,14 +16,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Globalization;
-
-//Szablon elementu Pusta strona jest udokumentowany na stronie https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Pogoda
 {
-    /// <summary>
-    /// Pusta strona, która może być używana samodzielnie lub do której można nawigować wewnątrz ramki.
-    /// </summary>
     public sealed partial class PogodaDetails : Page
     {
         public PogodaDetails()
@@ -32,15 +26,12 @@ namespace Pogoda
             LoadLoacation();
             LoadInfo();
         }
-
-
         private void Pogoda5dniaprzycisk_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
         }
         string API_KEY = ApiKey.Value;
         string Location = "Bydgoszcz";
-
         public void LoadLoacation()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -48,7 +39,6 @@ namespace Pogoda
             Location = myData;
 
         }
-
         public void LoadInfo()
         {
             using (WebClient webClient = new WebClient())
@@ -62,7 +52,6 @@ namespace Pogoda
                 int cloudiness = weatherTodayDate.Clouds.All;
                 int sunrise = weatherTodayDate.Sys.Sunrise;
                 int sunset = weatherTodayDate.Sys.Sunset;
-                // Assigning the additional instances to variables
                 double temperature = Math.Round(weatherTodayDate.Main.Temp);
                 string description = weatherTodayDate.Weather[0].Description;
                 double pressure = weatherTodayDate.Main.Pressure;
@@ -73,7 +62,6 @@ namespace Pogoda
                 {
                     return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(_UnixTimeStamp+correction);
                 }
-                
                 TemperaturaDnia.Text = temperature.ToString() + "°C";
                 MinTemp.Text = "Minimalna: " + minTemperature.ToString() + "°C";
                 MaxTemp.Text = "Maksymalna: " + maxTemperature.ToString() + "°C";
@@ -89,13 +77,9 @@ namespace Pogoda
                 {
                     icon = icon.Replace("n", "d");
                 }
-
                 string imagePath = "ms-appx:///Assets/WeatherIcons/" + icon + ".png";
                 BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
                 IkonkaDnia.Source = bitmapImage;
-
-
-
             }
         }
     }

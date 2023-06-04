@@ -13,7 +13,6 @@ namespace Pogoda
         public int cnt { get; set; }
         public List<WeatherEntry> list { get; set; }
     }
-
     public class WeatherEntry
     {
         public long dt { get; set; }
@@ -26,7 +25,6 @@ namespace Pogoda
         public Sys sys { get; set; }
         public string dt_txt { get; set; }
     }
-
     public class MainInfo
     {
         public double temp { get; set; }
@@ -39,7 +37,6 @@ namespace Pogoda
         public int humidity { get; set; }
         public double temp_kf { get; set; }
     }
-
     public class Weather
     {
         public int id { get; set; }
@@ -47,19 +44,16 @@ namespace Pogoda
         public string description { get; set; }
         public string icon { get; set; }
     }
-
     public class Clouds
     {
         public int all { get; set; }
     }
-
     public class Wind
     {
         public double speed { get; set; }
         public int deg { get; set; }
         public double gust { get; set; }
     }
-
     public class Sys
     {
         public string pod { get; set; }
