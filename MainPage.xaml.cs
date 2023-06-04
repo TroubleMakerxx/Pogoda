@@ -69,7 +69,8 @@ namespace Pogoda
                 return new List<string>();
             }
             List<string> cityList = serializedCityList.Split(',').ToList();
-            cityList.RemoveAll(location => location == "Location 3" || location == "Lokalizacja" || location == "Bydgoszcz");
+            cityList.RemoveAll(location => location == "Warszawa" || location == "GPS" || location == "Bydgoszcz");
+
             return cityList;
         }
 
@@ -86,11 +87,21 @@ namespace Pogoda
             double height = e.Size.Height;
         }
 
-        public void LoadLokalizacja()
+        public string LoadLokalizacja()
         {
-            Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
-            latitude = currentPosition.Coordinate.Point.Position.Latitude;
-            longitude = currentPosition.Coordinate.Point.Position.Longitude;
+            string Spr = "OK";
+            try
+            {
+                Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
+                latitude = currentPosition.Coordinate.Point.Position.Latitude;
+                longitude = currentPosition.Coordinate.Point.Position.Longitude;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Spr = "NO";
+                return Spr;
+            }
+            return Spr;
         }
 
         private void LoadSavedCountry()
@@ -112,7 +123,13 @@ namespace Pogoda
             var dialog = new MessageDialog(message);
             await dialog.ShowAsync();
         }
-        
+
+        public async void WyswietlBuG()
+        {
+            string message = "Włącz Lokalizację";
+            var dialog = new MessageDialog(message);
+            await dialog.ShowAsync();
+        }
 
         public void LoadDayData()
         {
@@ -272,10 +289,21 @@ namespace Pogoda
                 }
                 else if (savedLocation == "GPS")
                 {
-                    status = 1;
-                    LoadLokalizacja();
-                    LoadData();
-                    LoadDayData();
+                    string spr;
+                    spr = LoadLokalizacja();
+                    if (spr == "NO")
+                    {
+                        WyswietlBuG();
+                        return;
+                    }
+                    else
+                    {
+                        status = 1;
+                        SaveSelectedLocation(savedLocation);
+                        city = spr;
+                        LoadData();
+                        LoadDayData();
+                    }
                 }
                 else if (savedLocation == "Bydgoszcz")
                 {
@@ -493,9 +521,9 @@ namespace Pogoda
         {
             List<string> basicLocations = new List<string>
         {
-        "Bydgosz",
-        "Lokalizacja",
-        "Location 3"
+        "Bydgoszcz",
+        "GPS",
+        "Warszawa"
         };
 
             return basicLocations.Contains(location);
@@ -507,21 +535,23 @@ namespace Pogoda
             string selectedLocation = (string)((ListBox)sender).SelectedItem;
             UstawieniaLokalizacji.Content = selectedLocation;
             
-            if(selectedLocation=="Location 3")
+            if (selectedLocation == "GPS")
             {
-                city = "Kioto";
-                status = 2;
-                SaveSelectedLocation(selectedLocation);
-                LoadData();
-                LoadDayData();
-            }
-            else if (selectedLocation == "Lokalizacja")
-            {
-                status = 1;
-                LoadLokalizacja();
-                SaveSelectedLocation(selectedLocation);
-                LoadData();
-                LoadDayData();
+                string spr;
+                spr=LoadLokalizacja();
+                if (spr == "NO")
+                {
+                    WyswietlBuG();
+                    return;
+                }
+                else
+                {
+                    status = 1;
+                    SaveSelectedLocation(selectedLocation);
+                    city = spr;
+                    LoadData();
+                    LoadDayData();
+                }
             }
             else if (selectedLocation == "Bydgosz")
             {
