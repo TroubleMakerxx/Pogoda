@@ -16,14 +16,24 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Globalization;
+using Windows.Devices.Geolocation;
+using Windows.UI.Popups;
+
 namespace Pogoda
 {
     public sealed partial class PogodaDetails : Page
     {
+        private Geolocator geolocator;
         public PogodaDetails()
         {
             this.InitializeComponent();
+            geolocator = new Geolocator();
             LoadLoacation();
+            if (Location == "OK")
+            {
+                LoadLokalizacja();
+                status = 1;
+            }
             LoadInfo();
         }
         private void Pogoda5dniaprzycisk_Click(object sender, RoutedEventArgs e)
@@ -32,6 +42,9 @@ namespace Pogoda
         }
         string API_KEY = ApiKey.Value;
         string Location = "Bydgoszcz";
+        double latitude;
+        double longitude;
+        int status = 2;
         public void LoadLoacation()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -39,11 +52,33 @@ namespace Pogoda
             Location = myData;
 
         }
+        public async void wyswietl()
+        {
+            string message = "lokacja: "+Location+" Status:"+ status;
+            var dialog = new MessageDialog(message);
+            await dialog.ShowAsync();
+        }
+
+        public void LoadLokalizacja()
+        {
+                Geoposition currentPosition = geolocator.GetGeopositionAsync().GetAwaiter().GetResult();
+                latitude = currentPosition.Coordinate.Point.Position.Latitude;
+                longitude = currentPosition.Coordinate.Point.Position.Longitude;
+        }
+        
         public void LoadInfo()
         {
             using (WebClient webClient = new WebClient())
             {
-                string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q="+ Location + "&units=metric&appid=" + API_KEY);
+                string json;
+                if (status == 1)
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&units=metric&appid=" + API_KEY);
+                }
+                else
+                {
+                    json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/weather?q={Location}&units=metric&appid=" + API_KEY);
+                }
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
                 double feelsLike = Math.Round(weatherTodayDate.Main.FeelsLike);
                 double minTemperature = Math.Round(weatherTodayDate.Main.temp_min);
