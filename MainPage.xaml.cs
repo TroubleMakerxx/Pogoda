@@ -47,6 +47,7 @@ namespace Pogoda
             LoadData();
             LoadDayData();
             Window.Current.SizeChanged += Current_SizeChanged;
+           
         }
 
         private void SaveSelectedCity(string city)
@@ -56,45 +57,33 @@ namespace Pogoda
 
         private void AddSelection(List<string> city)
         {
-            // Convert the cityList to a serialized string
             string serializedCityList = string.Join(",", city);
-
-            // Store the serialized string in the ApplicationDataContainer
             localSettings.Values["SelectionCity"] = serializedCityList;
         }
 
         private List<string> GetSelection()
         {
-            // Retrieve the serialized string from the ApplicationDataContainer
             string serializedCityList = localSettings.Values["SelectionCity"] as string;
-
-            // If the serializedCityList is null or empty, return an empty list
             if (string.IsNullOrEmpty(serializedCityList))
             {
                 return new List<string>();
             }
-
-            // Split the serialized string by the comma separator to get the individual city names
             List<string> cityList = serializedCityList.Split(',').ToList();
             cityList.RemoveAll(location => location == "Location 3" || location == "Lokalizacja" || location == "Bydgoszcz");
-
             return cityList;
         }
 
         string API_KEY = ApiKey.Value;
-
         double latitude;
         double longitude;
         int status;
         string city = "Bydgoszcz";
         string Country = "Poland";
-        
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
             double width = e.Size.Width;
             double height = e.Size.Height;
-
         }
 
         public void LoadLokalizacja()
@@ -124,7 +113,6 @@ namespace Pogoda
             await dialog.ShowAsync();
         }
         
-
 
         public void LoadDayData()
         {
@@ -184,39 +172,28 @@ namespace Pogoda
                 WetherData weatherData = JsonConvert.DeserializeObject<WetherData>(json);
                 Dictionary<string, List<double>> temperatureDataByDay = new Dictionary<string, List<double>>();
                 Dictionary<string, Dictionary<string, int>> iconCountByDay = new Dictionary<string, Dictionary<string, int>>();
-
                 CultureInfo polishCulture = new CultureInfo("pl-PL");
                 DateTime currentDate = DateTime.Now.Date;
-
                 for (int i = 0; i < weatherData.list.Count; i++)
                 {
                     string date = weatherData.list[i].dt_txt;
                     DateTime dateTime = DateTime.Parse(date);
-
-                    // Skip the current day's weather forecast
                     if (dateTime.Date == currentDate)
                         continue;
-
                     string day = polishCulture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
-
-                    // Capitalize the first letter
                     day = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(day);
-
                     double temperature = weatherData.list[i].main.temp;
                     string temp = Math.Round(temperature).ToString() + "°C";
-
                     string description = weatherData.list[i].weather[0].description;
                     string iconCode = weatherData.list[i].weather[0].icon;
                     if (iconCode.Contains("n"))
                     {
                         iconCode = iconCode.Replace("n", "d");
                     }
-
                     if (!iconCountByDay.ContainsKey(day))
                     {
                         iconCountByDay.Add(day, new Dictionary<string, int>());
                     }
-
                     if (iconCountByDay[day].ContainsKey(iconCode))
                     {
                         iconCountByDay[day][iconCode]++;
@@ -225,7 +202,6 @@ namespace Pogoda
                     {
                         iconCountByDay[day].Add(iconCode, 1);
                     }
-
                     if (temperatureDataByDay.ContainsKey(day))
                     {
                         temperatureDataByDay[day].Add(temperature);
@@ -261,8 +237,6 @@ namespace Pogoda
                 {
                     string day = kvp.Key;
                     string mostFrequentIcon = kvp.Value.OrderByDescending(x => x.Value).FirstOrDefault().Key;
-
-                    // Update the icon for the corresponding day in the WeeklyWeatherData list
                     var weatherDay = WeeklyWeatherData.FirstOrDefault(w => w.Date == day);
                     if (weatherDay != null)
                     {
@@ -329,13 +303,9 @@ namespace Pogoda
             locationPanel.BorderThickness = new Thickness(1);
             locationPanel.CornerRadius = new CornerRadius(4);
             locationPanel.Padding = new Thickness(8);
-
-            // Create a ListBox to display the location options
             ListBox locationListBox = new ListBox();
             locationListBox.FontSize = 18;
             locationListBox.SelectionChanged += LocationListBox_SelectionChanged;
-
-            // Add some sample location options to the ListBox
             locationListBox.Items.Add("Bydgoszcz");
             locationListBox.Items.Add("Warszawa");
             locationListBox.Items.Add("GPS");
@@ -350,39 +320,23 @@ namespace Pogoda
             locationListBox.Items.Add(location);
             }
             }
-
-
-            // Add the ListBox to the panel
             locationPanel.Children.Add(locationListBox);
-
-            // Create the "Add" button
             Button addButton = new Button();
             addButton.Content = "Dodaj";
             addButton.Width = 150;
             addButton.Click += AddButton_Click;
-            addButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
-            addButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
-
-
-            // Create the "Remove" button
+            addButton.Background = new SolidColorBrush(Colors.Green);
+            addButton.Foreground = new SolidColorBrush(Colors.White);
             Button removeButton = new Button();
-            
             removeButton.Content = "Usuń";
             removeButton.Width = 150;
             removeButton.Click += RemoveButton_Click;
-            removeButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
-            removeButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
-
-
-            // Add the buttons to the panel
+            removeButton.Background = new SolidColorBrush(Colors.Red); 
+            removeButton.Foreground = new SolidColorBrush(Colors.White); 
             locationPanel.Children.Add(addButton);
             locationPanel.Children.Add(removeButton);
-
-            // Create a Flyout to display the panel
             Flyout flyout = new Flyout();
             flyout.Content = locationPanel;
-
-            // Attach the Flyout to the button
             flyout.ShowAt(UstawieniaLokalizacji);
         }
 
@@ -390,8 +344,6 @@ namespace Pogoda
         {
             Button addButton = (Button)sender;
             StackPanel locationPanel = (StackPanel)addButton.Parent;
-
-            // Disable the "Add" and "Remove" buttons
             foreach (UIElement element in locationPanel.Children)
             {
                 if (element is Button button)
@@ -400,33 +352,26 @@ namespace Pogoda
                     button.Visibility = Visibility.Collapsed;
                 }
             }
-
-            // Create a new StackPanel for entering the city name
             StackPanel enterCityPanel = new StackPanel();
             enterCityPanel.Background = new SolidColorBrush(Colors.LightBlue);
             enterCityPanel.BorderBrush = new SolidColorBrush(Colors.Gray);
             enterCityPanel.BorderThickness = new Thickness(1);
             enterCityPanel.CornerRadius = new CornerRadius(4);
             enterCityPanel.Padding = new Thickness(8);
-
-            // Create a TextBox for entering the city name
             TextBox cityNameTextBox = new TextBox();
             cityNameTextBox.FontSize = 18;
-            cityNameTextBox.Margin = new Thickness(0, 0, 0, 8); // Add some margin at the bottom
-
-            // Create the "Add City" button
+            cityNameTextBox.Margin = new Thickness(0, 0, 0, 8);
             Button addCityButton = new Button();
             addCityButton.Content = "Dodaj";
             addCityButton.Width = 130;
-            addCityButton.Background = new SolidColorBrush(Colors.Green); // Set button background color
-            addCityButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
-            addCityButton.Padding = new Thickness(12); // Adjust padding if needed
+            addCityButton.Background = new SolidColorBrush(Colors.Green); 
+            addCityButton.Foreground = new SolidColorBrush(Colors.White);
+            addCityButton.Padding = new Thickness(12);
             addCityButton.Click += (s, args) =>
             {
                 string cityName = cityNameTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(cityName))
                 {
-                    // Add the city to the ApplicationDataContainer localSettings
                     ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
                     string spr = SprawdzLokacje(cityNameTextBox.Text);
                     if (spr == "404")
@@ -435,30 +380,20 @@ namespace Pogoda
                         return;
                     }
                     localSettings.Values[cityName] = cityNameTextBox.Text;
-
-                    // Add the city name to the ListBox if it doesn't already exist
                     ListBox locationListBox = (ListBox)locationPanel.Children[0];
                     if (!locationListBox.Items.Contains(cityName))
                     {
                         locationListBox.Items.Add(cityName);
                     }
-
-                    // Create a list of city names from the ListBox items
                     List<string> cityList = new List<string>();
                     foreach (var item in locationListBox.Items)
                     {
                         cityList.Add(item.ToString());
                     }
-
-                    // Save the list of city names
                     AddSelection(cityList);
                 }
-
-                // Remove the enter city panel and show the previous location panel
                 locationPanel.Children.Remove(enterCityPanel);
                 locationPanel.Visibility = Visibility.Visible;
-
-                // Enable the "Add" and "Remove" buttons
                 foreach (UIElement element in locationPanel.Children)
                 {
                     if (element is Button button)
@@ -468,21 +403,16 @@ namespace Pogoda
                     }
                 }
             };
-
-            // Create the "Cancel" button
             Button cancelButton = new Button();
             cancelButton.Content = "Anuluj";
             cancelButton.Width = 130;
-            cancelButton.Background = new SolidColorBrush(Colors.Red); // Set button background color
-            cancelButton.Foreground = new SolidColorBrush(Colors.White); // Set button foreground (text) color
-            cancelButton.Padding = new Thickness(12); // Adjust padding if needed
+            cancelButton.Background = new SolidColorBrush(Colors.Red); 
+            cancelButton.Foreground = new SolidColorBrush(Colors.White); 
+            cancelButton.Padding = new Thickness(12);
             cancelButton.Click += (s, args) =>
             {
-                // Remove the enter city panel and show the previous location panel
                 locationPanel.Children.Remove(enterCityPanel);
                 locationPanel.Visibility = Visibility.Visible;
-
-                // Enable the "Add" and "Remove" buttons
                 foreach (UIElement element in locationPanel.Children)
                 {
                     if (element is Button button)
@@ -492,13 +422,9 @@ namespace Pogoda
                     }
                 }
             };
-
-            // Add the TextBox and buttons to the enter city panel
             enterCityPanel.Children.Add(cityNameTextBox);
             enterCityPanel.Children.Add(addCityButton);
             enterCityPanel.Children.Add(cancelButton);
-
-            // Add the enter city panel at the correct index within the parent panel
             locationPanel.Children.Insert(1, enterCityPanel);
         }
 
@@ -533,45 +459,27 @@ namespace Pogoda
         {
             Button removeButton = (Button)sender;
             StackPanel locationPanel = (StackPanel)removeButton.Parent;
-
-            // Get the ListBox from the location panel
             ListBox locationListBox = (ListBox)locationPanel.Children[0];
-
-            // Get the selected location from the ListBox
             string selectedLocation = locationListBox.SelectedItem as string;
 
             if (!string.IsNullOrEmpty(selectedLocation) && !IsBasicLocation(selectedLocation))
             {
-                // Display a confirmation dialog box
                 ContentDialog confirmDialog = new ContentDialog
                 {
-                    Title = "Confirm Deletion",
-                    Content = $"Are you sure you want to delete the location '{selectedLocation}'?",
-                    PrimaryButtonText = "Delete",
-                    CloseButtonText = "Cancel"
+                    Title = "Potwierdź usuwanie",
+                    Content = $"Czy na pewno chcesz usunąć '{selectedLocation}'?",
+                    PrimaryButtonText = "Usuń",
+                    CloseButtonText = "Anuluj"
                 };
-
                 ContentDialogResult result = await confirmDialog.ShowAsync();
-
                 if (result == ContentDialogResult.Primary)
                 {
-                    // User confirmed deletion, proceed with removing the location
                     ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-                    // Retrieve the saved locations from local settings
                     List<string> cityList = GetSelection();
-
-                    // Remove the selected location from the cityList
                     cityList.Remove(selectedLocation);
-
-                    // Save the updated list of city names
                     AddSelection(cityList);
-
-                    // Remove the location name from the list
                     ListBox listBox = (ListBox)locationPanel.Children[0];
                     listBox.Items.Remove(selectedLocation);
-
-                    // Set the location button to "Bydgoszcz"
                     SaveSelectedLocation("Bydgoszcz");
                     city = "Bydgoszcz";
                     UstawieniaLokalizacji.Content = "Bydgoszcz";
@@ -583,7 +491,6 @@ namespace Pogoda
 
         private bool IsBasicLocation(string location)
         {
-            // Define the basic locations
             List<string> basicLocations = new List<string>
         {
         "Bydgosz",
@@ -597,10 +504,7 @@ namespace Pogoda
 
         public void LocationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Get the selected location
             string selectedLocation = (string)((ListBox)sender).SelectedItem;
-
-            // Update the location text
             UstawieniaLokalizacji.Content = selectedLocation;
             
             if(selectedLocation=="Location 3")
