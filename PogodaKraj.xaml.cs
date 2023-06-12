@@ -125,7 +125,7 @@ namespace Pogoda
             {
                 string json = webClient.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=" + Country + "&units=metric&appid=" + API_KEY);
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
-                double feelsLike = Math.Round(weatherTodayDate.Main.FeelsLike);
+                double feelsLike = Math.Round(weatherTodayDate.Main.feels_like);
                 double minTemperature = Math.Round(weatherTodayDate.Main.temp_min);
                 double maxTemperature = Math.Round(weatherTodayDate.Main.temp_max);
                 int visibility = weatherTodayDate.Visibility;
@@ -261,7 +261,7 @@ namespace Pogoda
                 TextBlock MinTemp = new TextBlock();
                 MinTemp.Name = "MinTemp";
                 MinTemp.Margin = new Thickness(10, 2, 10, 2);
-                MinTemp.Text = $"Min: {minTemperature}°C   Max: {maxTemperature}°C";
+                MinTemp.Text = $"Min: {minTemperature}°C";
                 MinTemp.FontSize = 25;
                 MinTemp.Foreground = new SolidColorBrush(Colors.Black);
                 MinTemp.HorizontalAlignment = HorizontalAlignment.Center;
@@ -272,7 +272,7 @@ namespace Pogoda
                 TextBlock MaxTemp = new TextBlock();
                 MaxTemp.Name = "MaxTemp";
                 MaxTemp.Margin = new Thickness(10, 2, 10, 2);
-                MaxTemp.Text = $"Min: {minTemperature}°C   Max: {maxTemperature}°C";
+                MaxTemp.Text = $"Max: {maxTemperature}°C";
                 MaxTemp.FontSize = 25;
                 MaxTemp.Foreground = new SolidColorBrush(Colors.Black);
                 MaxTemp.HorizontalAlignment = HorizontalAlignment.Center;
@@ -294,7 +294,7 @@ namespace Pogoda
                 TextBlock FeelsLike = new TextBlock();
                 FeelsLike.Name = "FeelsLike";
                 FeelsLike.Margin = new Thickness(10, 2, 10, 2);
-                FeelsLike.Text = "odczuwalna";
+                FeelsLike.Text = "Odczuwalna: "+feelsLike+ "°C";
                 FeelsLike.FontSize = 25;
                 FeelsLike.Foreground = new SolidColorBrush(Colors.Black);
                 FeelsLike.HorizontalAlignment = HorizontalAlignment.Center;
@@ -316,7 +316,7 @@ namespace Pogoda
                 TextBlock Cloudiness = new TextBlock();
                 Cloudiness.Name = "Cloudiness";
                 Cloudiness.Margin = new Thickness(10, 2, 10, 2);
-                Cloudiness.Text = "Zachmurzenie";
+                Cloudiness.Text = "Zachmurzenie:"+cloudiness+"%";
                 Cloudiness.FontSize = 25;
                 Cloudiness.Foreground = new SolidColorBrush(Colors.Black);
                 Cloudiness.HorizontalAlignment = HorizontalAlignment.Center;

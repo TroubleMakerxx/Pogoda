@@ -37,7 +37,7 @@ namespace Pogoda
     internal class MainWeatherData
     {
         public double Temp { get; set; }
-        public double FeelsLike { get; set; }
+        public double feels_like { get; set; }
         public double temp_min { get; set; }
         public double temp_max { get; set; }
         public int Pressure { get; set; }

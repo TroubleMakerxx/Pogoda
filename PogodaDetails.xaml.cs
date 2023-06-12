@@ -80,7 +80,7 @@ namespace Pogoda
                     json = webClient.DownloadString($"http://api.openweathermap.org/data/2.5/weather?q={Location}&units=metric&appid=" + API_KEY);
                 }
                 WeatherTodayDate weatherTodayDate = JsonConvert.DeserializeObject<WeatherTodayDate>(json);
-                double feelsLike = Math.Round(weatherTodayDate.Main.FeelsLike);
+                double feelsLike = Math.Round(weatherTodayDate.Main.feels_like);
                 double minTemperature = Math.Round(weatherTodayDate.Main.temp_min);
                 double maxTemperature = Math.Round(weatherTodayDate.Main.temp_max);
                 int visibility = weatherTodayDate.Visibility;
